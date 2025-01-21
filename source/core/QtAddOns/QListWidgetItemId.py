@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 from PySide6.QtWidgets import QListWidgetItem, QListWidget
-from PySide6.QtCore import Qt
+from PySide6.QtGui import QResizeEvent
+from PySide6.QtCore import Qt, Signal
 
 from typing import Optional
 
@@ -9,9 +11,6 @@ class QListWidgetItemId(QListWidgetItem):
     Héritage:
     Rôle:
     """
-    # Déclaration de static_index, qui est utilisé comme une variable statique 
-    # en c++
-    static_index = 0
 
     def __init__(self: QListWidgetItemId, 
                  listview: Optional[QListWidget] = None) -> None:
@@ -96,7 +95,10 @@ class QListWidgetItemId(QListWidgetItem):
     
     def __hash__(self) -> int:
         # TODO : change it and make it works
-        return hash(str(self._identifiant))
+        return hash(id(self))
     
     def __eq__(self, value) -> bool:
         return False
+    
+    def setSizeHint(self, size):
+        return super().setSizeHint(size)

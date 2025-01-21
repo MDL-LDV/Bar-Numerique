@@ -29,6 +29,7 @@ class QNavigationBar(QWidget):
             -> None:
         if isinstance(item, QListWidgetItemId):
             self.onglets.addItem(item)
+            # TODO check f's type
             self.map_index_call[item] = f
         else:
             raise TypeError("Type asked: " + QListWidgetItemId.__module__ + "."
@@ -37,13 +38,20 @@ class QNavigationBar(QWidget):
                             + item.__class__.__module__ + "." 
                             + item.__class__.__name__)
     
-    def addWidget(self: QNavigationBar, widget: QFriendWidget) -> None:
-        if isinstance(widget, QWidget):
-            item = QListWidgetItemId()
-            widget.setFriend(item)
+    def addWidget(self: QNavigationBar, widget: QFriendWidget, f: callable)\
+            -> None:
+        if isinstance(widget, QFriendWidget):
+            item = QListWidgetItemId(self.onglets)
+            item.setSizeHint(widget.minimumSizeHint())
             self.onglets.setItemWidget(item, widget)
+            # TODO check f's type
+            self.map_index_call[item] = f
         else:
-            pass
+            raise TypeError("Type asked: " + QFriendWidget.__module__ + "."
+                            + QFriendWidget.__name__
+                            + "\n\tTyped entered: " 
+                            + widget.__class__.__module__ + "." 
+                            + widget.__class__.__name__)
     
     def removeItem(self: QNavigationBar, item: QListWidgetItemId) -> None:
         if item in self.onglets.items():

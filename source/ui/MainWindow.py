@@ -2,6 +2,8 @@ from PySide6.QtWidgets import QMainWindow, QWidget, QStackedWidget, QSplitter,\
     QMenu, QListWidgetItem
 from PySide6.QtCore import Qt
 
+from core.QtAddOns import QFriendWidget
+
 from .QNavigationBar import QNavigationBar
 
 from core.QtAddOns import QListWidgetItemId
@@ -49,8 +51,13 @@ class MainWindow(QMainWindow):
         self.navbar = QNavigationBar(self)
         self.navbar.setStyleSheet("background-color: blue;")
 
-        # self.navbar.addItem(self.caisse_item, lambda: print("Bonjour"))
+        item = QListWidgetItemId()
+        item.setData(0, "Coucou")
+        self.navbar.addItem(item, lambda: print("Bonjour"))
 
+        self.caisse_widget = QFriendWidget()
+        self.caisse_widget.setStyleSheet("QWidget:hover { background-color: yellow; } QWidget { background-color: transparent; margin: 0px; padding: 0px; } ")
+        self.navbar.addWidget(self.caisse_widget, lambda: print("Au revoir"))
         self.body = QStackedWidget(self)
         self.body.setStyleSheet("background-color: red;")
         
