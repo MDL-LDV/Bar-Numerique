@@ -48,6 +48,8 @@ class MainWindow(QMainWindow):
         
         self.navbar = QNavigationBar(self)
 
+        # Menu burger
+
         item = QListWidgetItemId()
         item.setData(0, "Bonjour")
         self.navbar.addItem(item, lambda: print("Bonjour"))
