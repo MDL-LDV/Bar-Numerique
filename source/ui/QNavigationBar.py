@@ -1,6 +1,6 @@
 from __future__ import annotations
 from PySide6.QtWidgets import QWidget, QListWidget, QListWidgetItem
-from core.QtAddOns import QFriendWidget
+from PySide6.QtCore import Qt
 
 from core.QtAddOns import QListWidgetItemId
 
@@ -21,13 +21,31 @@ class QNavigationBar(QWidget):
         super().__init__(parent)
 
         self.onglets = QListWidget(self)
-        self.onglets.setStyleSheet("background-color: green;")
+        self.onglets.setSpacing(5)
+        self.onglets.setStyleSheet(
+            """
+            QListWidget { 
+                border-right: 1px solid #000000;
+            }
+            QListWidget::item {
+                border: 1px solid black;
+                border-radius: 10px;
+                font-size: 20px;
+                width: 100%;
+                height: 150px;
+            }
+            QListWidget::item:selected {
+                background-color: rgba(135, 190, 255, 50);
+                color: black;
+            }
+            """)
         self.onglets.itemPressed.connect(self.dispatcher)
         self.map_index_call: dict[QListWidgetItemId: callable] = {}
 
     def addItem(self: QNavigationBar, item: QListWidgetItemId, f: callable)\
             -> None:
         if isinstance(item, QListWidgetItemId):
+            item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.onglets.addItem(item)
             # TODO check f's type
             self.map_index_call[item] = f
@@ -38,17 +56,17 @@ class QNavigationBar(QWidget):
                             + item.__class__.__module__ + "." 
                             + item.__class__.__name__)
     
-    def addWidget(self: QNavigationBar, widget: QFriendWidget, f: callable)\
+    def addWidget(self: QNavigationBar, widget: QWidget, f: callable)\
             -> None:
-        if isinstance(widget, QFriendWidget):
+        if isinstance(widget, QWidget):
             item = QListWidgetItemId(self.onglets)
             item.setSizeHint(widget.minimumSizeHint())
             self.onglets.setItemWidget(item, widget)
             # TODO check f's type
             self.map_index_call[item] = f
         else:
-            raise TypeError("Type asked: " + QFriendWidget.__module__ + "."
-                            + QFriendWidget.__name__
+            raise TypeError("Type asked: " + QWidget.__module__ + "."
+                            + QWidget.__name__
                             + "\n\tTyped entered: " 
                             + widget.__class__.__module__ + "." 
                             + widget.__class__.__name__)

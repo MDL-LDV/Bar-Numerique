@@ -1,8 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QWidget, QStackedWidget, QSplitter,\
-    QMenu, QListWidgetItem
+    QMenu, QListWidgetItem, QLabel, QHBoxLayout
 from PySide6.QtCore import Qt
-
-from core.QtAddOns import QFriendWidget
 
 from .QNavigationBar import QNavigationBar
 
@@ -49,15 +47,27 @@ class MainWindow(QMainWindow):
         self.setMenuBar(self.menu_bar)
         
         self.navbar = QNavigationBar(self)
-        self.navbar.setStyleSheet("background-color: blue;")
 
         item = QListWidgetItemId()
-        item.setData(0, "Coucou")
+        item.setData(0, "Bonjour")
         self.navbar.addItem(item, lambda: print("Bonjour"))
 
-        self.caisse_widget = QFriendWidget()
-        self.caisse_widget.setStyleSheet("QWidget:hover { background-color: yellow; } QWidget { background-color: transparent; margin: 0px; padding: 0px; } ")
-        self.navbar.addWidget(self.caisse_widget, lambda: print("Au revoir"))
+        item = QListWidgetItemId()
+        item.setData(0, "Au revoir")
+        self.navbar.addItem(item, lambda: print("Au revoir"))
+
+        # self.caisse_widget = QWidget()
+        # layout = QHBoxLayout(self.caisse_widget)
+        # label = QLabel()
+        # label.setText("Bonjour")
+        # layout.addWidget(label)
+        # self.caisse_widget.setStyleSheet(
+        #     "QWidget { background-color: transparent; } "
+        #     + "QWidget:hover { background-color: yellow; }")
+        # self.caisse_widget.setStyleSheet(
+        #     "QWidget:hover { background-color: yellow; } "
+        #     + "QWidget { background-color: transparent; } ")
+        # self.navbar.addWidget(self.caisse_widget, lambda: print("Au revoir"))
         self.body = QStackedWidget(self)
         self.body.setStyleSheet("background-color: red;")
         
