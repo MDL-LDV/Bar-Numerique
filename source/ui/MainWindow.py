@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QMainWindow, QWidget, QStackedWidget, QSplitter,\
-    QMenu, QListWidgetItem, QLabel, QHBoxLayout
+    QMenu, QPushButton
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QAction, QPixmap
 
 from .QNavigationBar import QNavigationBar
 
@@ -41,14 +42,18 @@ class MainWindow(QMainWindow):
         )
 
         self.menu_bar = self.menuBar()
+        burger = QPixmap("assets/burger.svg")
+        self.menu_burger = QAction()
+        self.menu_burger.setIcon(burger)
+        self.menu_bar.addAction(self.menu_burger)
         self.fichier = QMenu(self.menu_bar)
         self.fichier.setTitle("Fichier")
         self.menu_bar.addMenu(self.fichier)
         self.setMenuBar(self.menu_bar)
         
         self.navbar = QNavigationBar(self)
-
-        # Menu burger
+        self.navbar.hide()
+        self.menu_burger.triggered.connect(self.navbar.activer)
 
         item = QListWidgetItemId()
         item.setData(0, "Bonjour")
@@ -70,16 +75,17 @@ class MainWindow(QMainWindow):
         #     "QWidget:hover { background-color: yellow; } "
         #     + "QWidget { background-color: transparent; } ")
         # self.navbar.addWidget(self.caisse_widget, lambda: print("Au revoir"))
+        
         self.body = QStackedWidget(self)
         self.body.setStyleSheet("background-color: red;")
         
         self.splitter = QSplitter(self)
         self.splitter.insertWidget(0, self.navbar)
         self.splitter.insertWidget(1, self.body)
-
         
         self.splitter.setSizes([1, 5])
 
         self.setCentralWidget(self.splitter)
 
         self.showMaximized()
+    

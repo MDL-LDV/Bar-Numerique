@@ -1,6 +1,6 @@
 from __future__ import annotations
 from PySide6.QtWidgets import QWidget, QListWidget, QListWidgetItem
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QEvent
 
 from core.QtAddOns import QListWidgetItemId
 
@@ -81,9 +81,18 @@ class QNavigationBar(QWidget):
                 + f"{self.objectName()}, il ne peut donc pas en être retiré"
             )
     
-    def dispatcher(self, item: QListWidgetItemId) -> None:
+    def dispatcher(self: QNavigationBar, item: QListWidgetItemId) -> None:
         self.map_index_call[item].__call__()
     
-    def resizeEvent(self, event):
+    def resizeEvent(self: QNavigationBar, event: QEvent) -> None:
         self.onglets.resize(event.size())
         return super().resizeEvent(event)
+    
+    def activer(self: QNavigationBar) -> None:
+        print("coucou")
+        if self.isHidden():
+            self.show()
+        else:
+            self.hide()
+        
+        self.update()
