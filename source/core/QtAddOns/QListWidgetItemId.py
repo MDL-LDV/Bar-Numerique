@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QListWidgetItem, QListWidget
 from PySide6.QtGui import QResizeEvent
 from PySide6.QtCore import Qt, Signal
 
-from typing import Optional
+from typing import Optional, Any
 
 class QListWidgetItemId(QListWidgetItem):
     """
@@ -93,12 +93,30 @@ class QListWidgetItemId(QListWidgetItem):
             raise TypeError(f"The {self.__class__.__name__} 'identifiant' "
                             + "propery does not support item assignment.")
     
-    def __hash__(self) -> int:
-        # TODO : change it and make it works
+    def __hash__(self: QListWidgetItemId) -> int:
+        """
+        Entrée:
+            self: QListWidgetItemId
+        Sortie:
+            int
+        Rôle:
+            Hash QListWidgetItemId pour qu'il puisse être utilisé dans un 
+            mapping.
+        """
+        # WARNING: Two objects that compare equal must also have the same hash 
+        # value, but the reverse is not necessarily true.
         return hash(id(self))
     
-    def __eq__(self, value) -> bool:
+    def __eq__(self: QListWidgetItemId, valeur: Any) -> bool:
+        """
+        Entrées:
+            self: QListWidgetItemId
+            valeur: Any
+        Sortie:
+            bool (comparaison)
+        Rôle:
+            Retourne 
+        """
+        # WARNING: Two objects that compare equal must also have the same hash 
+        # value, but the reverse is not necessarily true.
         return False
-    
-    def setSizeHint(self, size):
-        return super().setSizeHint(size)

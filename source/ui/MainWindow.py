@@ -41,6 +41,8 @@ class MainWindow(QMainWindow):
             f"{self.windowTitle()}_{version}"
         )
 
+        #! TODO: Styliser le menu pour qu'il soit plus grand (height) et que 
+        # l'icon du menu burger soit plus grande et facile à cliquer
         self.menu_bar = self.menuBar()
         burger = QPixmap("assets/burger.svg")
         self.menu_burger = QAction()
@@ -75,7 +77,7 @@ class MainWindow(QMainWindow):
         #     "QWidget:hover { background-color: yellow; } "
         #     + "QWidget { background-color: transparent; } ")
         # self.navbar.addWidget(self.caisse_widget, lambda: print("Au revoir"))
-        
+
         self.body = QStackedWidget(self)
         self.body.setStyleSheet("background-color: red;")
         
