@@ -9,7 +9,6 @@ from typing import Optional
 class QBody(QStackedWidget):
     def __init__(self, parent: Optional[QWidget] = None):
         super().__init__(parent)
-        self.setStyleSheet("QStackedWidget {background-color: red;} QStackedWidget::item { color; yellow; }")
         self.map_page_index: dict[str, int] = {}
     
     def addWidget(self, w: QWidget) -> int:

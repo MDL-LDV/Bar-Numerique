@@ -28,7 +28,6 @@ class QNavigationBar(QWidget):
             """
             QListWidget { 
                 border-right: 1px solid #000000;
-                background-color: blue;
             }
             QListWidget::item {
                 border: 1px solid black;

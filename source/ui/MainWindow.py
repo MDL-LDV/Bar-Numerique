@@ -36,6 +36,7 @@ class MainWindow(QMainWindow):
         # Give the app a name
         self.setWindowTitle("Bar numérique")
         self.resize(700, 400)
+        self.setStyleSheet("background-color: white;")
 
         # Définit l'icone dans la bar des tâches (en utilisant celle de 
         # l'application) https://stackoverflow.com/a/1552105/15793884
@@ -44,12 +45,19 @@ class MainWindow(QMainWindow):
         )
 
         self.menu_bar = self.menuBar()
+        self.menu_bar.setStyleSheet("QMenu::item:selected { color: black; background-color: #D5D5D5; border: none; } QMenuBar::item:selected { background-color: #D5D5D5; } QMenuBar::item:selected#burger { background-color: transparent; }")
         burger = QPixmap("assets/burger.svg")
-        self.menu_burger = QAction()
+        self.menu_burger = QAction(self.menu_bar)
+        self.menu_burger.setObjectName("burger")
         self.menu_burger.setIcon(burger)
         self.menu_bar.addAction(self.menu_burger)
         self.fichier = QMenu(self.menu_bar)
         self.fichier.setTitle("Fichier")
+        self.quitter = QAction(self.fichier)
+        self.quitter.setText("Quitter")
+        self.quitter.setShortcut("Ctrl+Q")
+        self.quitter.triggered.connect(self.close)
+        self.fichier.addAction(self.quitter)
         self.menu_bar.addMenu(self.fichier)
         self.setMenuBar(self.menu_bar)
         
@@ -80,17 +88,12 @@ class MainWindow(QMainWindow):
 
         self.caisse = CaissePage(self.body)
         self.body.addWidget(self.caisse)
-
-        w = QWidget(self)
-        w.setObjectName("coucou")
-        w.setStyleSheet("QWidget { background-color: white; border: 2px solid black; }")
-        self.body.addWidget(w)
         
         self.splitter = QSplitter(self)
         self.splitter.insertWidget(0, self.navbar)
         self.splitter.insertWidget(1, self.body)
         
-        self.splitter.setSizes([1, 1])
+        self.splitter.setSizes([1, 5])
 
         self.setCentralWidget(self.splitter)
 

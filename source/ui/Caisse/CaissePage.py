@@ -1,18 +1,22 @@
 from __future__ import annotations
 
-from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout
-from PySide6.QtCore import QSize
+from PySide6.QtWidgets import QWidget, QSplitter
 
 from typing import Optional
 
+from .QListProduits import QListProduits
 
-class CaissePage(QWidget):
+
+class CaissePage(QSplitter):
     def __init__(self: CaissePage, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self.setObjectName("Caisse")
-        self.setStyleSheet("QWidget { background-color: white; border: 2px solid black; }")
 
-        self.central_layout = QHBoxLayout(self)
-        self.central_layout.setContentsMargins(0, 0, 0, 0)
-        bonjour = QLabel("Bonjour", self)
-        self.central_layout.addWidget(bonjour)
+        self.produits = QListProduits(self)
+        self.addWidget(self.produits)
+        
+        self.payment = QWidget()
+        self.payment.setStyleSheet("background-color: yellow;")
+        self.addWidget(self.payment)
+
+        self.setSizes([4, 1])

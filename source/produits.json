@@ -1,0 +1,34 @@
+{
+    "Cappuccino": {
+        "price": 0.4,
+        "color": "#A5B5DC"
+    },
+    "Chocolat chaud": {
+        "price": 0.4,
+        "color": "#A97847"
+    },
+    "Café": {
+        "price": 0.4,
+        "color": "#AF9E88"
+    },
+    "Jus de pomme": {
+        "price": 0.3,
+        "color": "#F5DBB0"
+    },
+    "Grand sirop": {
+        "price": 0.3,
+        "color": "#97E2A7"
+    },
+    "Demi café": {
+        "price": 0.2,
+        "color": "#D4BFA3"
+    },
+    "Thé": {
+        "price": 0.15,
+        "color": "#91AF88"
+    },
+    "Sirop": {
+        "price": 0.1,
+        "color": "#EEA5A5"
+    }
+}
