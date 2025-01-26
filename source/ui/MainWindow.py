@@ -1,9 +1,10 @@
-from PySide6.QtWidgets import QMainWindow, QWidget, QStackedWidget, QSplitter,\
-    QMenu, QPushButton
+from PySide6.QtWidgets import QMainWindow, QWidget, QSplitter, QMenu
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QAction, QPixmap
 
 from .QNavigationBar import QNavigationBar
+from .QBody import QBody
+from .Caisse import CaissePage
 
 from core.QtAddOns import QListWidgetItemId
 
@@ -56,12 +57,9 @@ class MainWindow(QMainWindow):
         self.menu_burger.triggered.connect(self.navbar.activer)
 
         item = QListWidgetItemId()
-        item.setData(0, "Bonjour")
-        self.navbar.addItem(item, lambda: print("Bonjour"))
-
-        item = QListWidgetItemId()
-        item.setData(0, "Au revoir")
-        self.navbar.addItem(item, lambda: print("Au revoir"))
+        item.identifiant = "Caisse"
+        item.setData(0, "Caisse")
+        self.navbar.addItem(item, lambda: print("Caisse"))
 
         # self.caisse_widget = QWidget()
         # layout = QHBoxLayout(self.caisse_widget)
@@ -76,8 +74,14 @@ class MainWindow(QMainWindow):
         #     + "QWidget { background-color: transparent; } ")
         # self.navbar.addWidget(self.caisse_widget, lambda: print("Au revoir"))
         
-        self.body = QStackedWidget(self)
-        self.body.setStyleSheet("background-color: red;")
+        self.body = QBody(self)
+        self.navbar.pageclicked.connect(self.body.dispatcher)
+
+        w = QWidget(self)
+        w.setObjectName("coucou")
+        self.body.addWidget(w)
+        self.caisse = CaissePage()
+        self.body.addWidget(self.caisse)
         
         self.splitter = QSplitter(self)
         self.splitter.insertWidget(0, self.navbar)
