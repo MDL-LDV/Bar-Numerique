@@ -4,7 +4,7 @@ from ui.MainWindow import MainWindow
 
 
 if __name__ == "__main__" and sys.version_info >= (3, 12):
-    #! TODO: make it works
+    # Modifier les arguments pour forcer l'usage du mode clair
     # https://doc.qt.io/qt-6/qguiapplication.html#platform-specific-arguments
     sys.argv += ['-platform', 'windows:darkmode=0']
 

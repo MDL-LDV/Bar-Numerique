@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import QMainWindow, QWidget, QSplitter, QMenu
+from PySide6.QtWidgets import (QMainWindow, QWidget, QSplitter, QMenu, 
+    QSizePolicy)
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QAction, QPixmap
 
@@ -77,17 +78,19 @@ class MainWindow(QMainWindow):
         self.body = QBody(self)
         self.navbar.pageclicked.connect(self.body.dispatcher)
 
+        self.caisse = CaissePage(self.body)
+        self.body.addWidget(self.caisse)
+
         w = QWidget(self)
         w.setObjectName("coucou")
+        w.setStyleSheet("QWidget { background-color: white; border: 2px solid black; }")
         self.body.addWidget(w)
-        self.caisse = CaissePage()
-        self.body.addWidget(self.caisse)
         
         self.splitter = QSplitter(self)
         self.splitter.insertWidget(0, self.navbar)
         self.splitter.insertWidget(1, self.body)
         
-        self.splitter.setSizes([1, 5])
+        self.splitter.setSizes([1, 1])
 
         self.setCentralWidget(self.splitter)
 

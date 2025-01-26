@@ -9,6 +9,7 @@ from typing import Optional
 class QBody(QStackedWidget):
     def __init__(self, parent: Optional[QWidget] = None):
         super().__init__(parent)
+        self.setStyleSheet("QStackedWidget {background-color: red;} QStackedWidget::item { color; yellow; }")
         self.map_page_index: dict[str, int] = {}
     
     def addWidget(self, w: QWidget) -> int:
@@ -28,9 +29,8 @@ class QBody(QStackedWidget):
     
     def sizeHint(self):
         # return super().sizeHint()
-        return QSize(0, 0)
+        return QSize(-1, -1)
 
     def minimumSizeHint(self):
         # return super().minimumSizeHint()
-        return QSize(0, 0)
-    
+        return QSize(-1, -1)
