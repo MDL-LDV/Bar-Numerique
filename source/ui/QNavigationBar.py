@@ -1,6 +1,6 @@
 from __future__ import annotations
 from PySide6.QtWidgets import QWidget, QListWidget, QListWidgetItem
-from PySide6.QtCore import Qt, QEvent
+from PySide6.QtCore import Qt, QEvent, Signal
 
 from core.QtAddOns import QListWidgetItemId
 
@@ -8,6 +8,8 @@ from core.QtAddOns import QListWidgetItemId
 
 
 class QNavigationBar(QWidget):
+    pageclicked = Signal(str)
+
     def __init__(self: QNavigationBar, parent: QWidget) -> None:
         """
         Entrées:
@@ -40,7 +42,7 @@ class QNavigationBar(QWidget):
             }
             """)
         self.onglets.itemPressed.connect(self.dispatcher)
-        self.map_index_call: dict[QListWidgetItemId: callable] = {}
+        # self.map_index_call: dict[QListWidgetItemId: callable] = {}
 
     def addItem(self: QNavigationBar, item: QListWidgetItemId, f: callable)\
             -> None:
@@ -48,7 +50,7 @@ class QNavigationBar(QWidget):
             item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.onglets.addItem(item)
             # TODO check f's type
-            self.map_index_call[item] = f
+            # self.map_index_call[item] = f
         else:
             raise TypeError("Type asked: " + QListWidgetItemId.__module__ + "."
                             + QListWidgetItemId.__name__
@@ -63,7 +65,7 @@ class QNavigationBar(QWidget):
             item.setSizeHint(widget.minimumSizeHint())
             self.onglets.setItemWidget(item, widget)
             # TODO check f's type
-            self.map_index_call[item] = f
+            # self.map_index_call[item] = f
         else:
             raise TypeError("Type asked: " + QWidget.__module__ + "."
                             + QWidget.__name__
@@ -73,7 +75,7 @@ class QNavigationBar(QWidget):
     
     def removeItem(self: QNavigationBar, item: QListWidgetItemId) -> None:
         if item in self.onglets.items():
-            self.map_index_call.pop(item)
+            # self.map_index_call.pop(item)
             self.onglets.removeItemWidget(item)
         else:
             raise IndexError(
@@ -82,14 +84,14 @@ class QNavigationBar(QWidget):
             )
     
     def dispatcher(self: QNavigationBar, item: QListWidgetItemId) -> None:
-        self.map_index_call[item].__call__()
+        # self.map_index_call[item].__call__()
+        self.pageclicked.emit(item.identifiant)
     
     def resizeEvent(self: QNavigationBar, event: QEvent) -> None:
         self.onglets.resize(event.size())
         return super().resizeEvent(event)
     
     def activer(self: QNavigationBar) -> None:
-        print("coucou")
         if self.isHidden():
             self.show()
         else:
