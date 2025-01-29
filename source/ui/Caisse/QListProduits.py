@@ -1,14 +1,35 @@
 from __future__ import annotations
 
 from PySide6.QtWidgets import (QListWidget, QWidget, QListView, 
-    QListWidgetItem, QLabel)
-from PySide6.QtGui import QMouseEvent
+    QListWidgetItem, QLabel, QStyledItemDelegate, QStyleOptionViewItem, QStyle)
+from PySide6.QtGui import QMouseEvent, QColor, QPainter
 from PySide6.QtCore import (QFileInfo, QDir, QJsonDocument, QJsonArray, 
-    QJsonValue, QSize, Qt)
+    QJsonValue, QSize, Qt, QModelIndex, QPersistentModelIndex)
 
 from os.path import exists as os_exists
 
 from typing import Optional
+
+
+class CustomDelegate(QStyledItemDelegate):
+    def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex | QPersistentModelIndex):
+        # TODO: on selected
+        # Appeler la méthode de base pour conserver le style par défaut
+        if QStyle.StateFlag.State_Selected in option.state :
+            option.state = option.state & ~QStyle.StateFlag.State_Selected
+        super().paint(painter, option, index)
+
+        # painter.save()
+        # pen = painter.pen()
+        # pen.setColor(Qt.red)
+        # painter.setPen(pen)
+        # painter.drawRect(option.rect.adjusted(1, 1, -1, -1))
+        # print("option", option.state)
+        # painter.restore()
+    
+    def sizeHint(self, option, index):
+        # return super().sizeHint(option, index)
+        return QSize(200, 250)
 
 
 def get_chemin(filename: str, dirname: str = "") -> str | None:
@@ -41,11 +62,6 @@ def get_chemin(filename: str, dirname: str = "") -> str | None:
             raise NameError(f"Directory {dirname} does not exist")
 
 
-class NewQListProduits(QWidget):
-    def __init__(self, parent: QWidget):
-        super().__init__(parent)
-
-
 class QListProduits(QListWidget):
     def __init__(self, parent: QWidget):
         super().__init__(parent)
@@ -63,9 +79,10 @@ class QListProduits(QListWidget):
                 border: 2px solid black; 
                 border-radius: 20px; 
             }
-            QListWidget::item:focus {
-            }
             /* removing the focus selection */
+            QListWidget::item:focus {
+                color: black;
+            }
             QListView
             {
                 outline: none;
@@ -75,11 +92,13 @@ class QListProduits(QListWidget):
 
         self.setFlow(QListView.Flow.LeftToRight)
         self.setWrapping(True)
-        # self.setViewMode(QListView.ViewMode.IconMode)
         self.setSelectionRectVisible(False)
         self.setSpacing(5)
         self.setResizeMode(QListView.ResizeMode.Adjust)
         self.setItemAlignment(Qt.AlignmentFlag.AlignHCenter)
+
+        self.setItemDelegate(CustomDelegate(self))
+        self.itemClicked.connect(lambda item: print(item.data(0)))
 
         self.fill()
 
@@ -96,15 +115,21 @@ class QListProduits(QListWidget):
 
         self.clear()
         for key, value in self.produits.items():
-            # print(f"{key}: {value}")
-            item = QListWidgetItem(self)
+            # item = QListWidgetItem(self)
+            # w = Vignette(self)
+            # w.setTitre(key)
+            # w.setColor(value["color"])
+            # item.setFlags(Qt.ItemFlag.ItemIsEnabled)
+            # item.setSizeHint(w.sizeHint())
+            # self.setItemWidget(item, w)
 
-            w = Vignette(self)
-            w.setTitre(key)
-            w.setColor(value["color"])
-            item.setFlags(Qt.ItemFlag.ItemIsEnabled)
-            item.setSizeHint(w.sizeHint())
-            self.setItemWidget(item, w)
+            item = QListWidgetItem(self)
+            item.setData(Qt.ItemDataRole.DisplayRole, key)
+            colour = QColor(value["color"])
+            print(colour)
+            item.setData(Qt.ItemDataRole.DecorationRole, colour)
+            item.setData(Qt.ItemDataRole.TextAlignmentRole, Qt.AlignmentFlag.AlignCenter)
+            self.addItem(item)
     
     def minimumSizeHint(self):
         # return super().minimumSizeHint()
@@ -114,10 +139,9 @@ class QListProduits(QListWidget):
 class Vignette(QWidget):
     def __init__(self, parent: QWidget):
         super().__init__(parent)
-        self.setProperty("clicked", True)
         self.setFixedSize(200, 250)
-        self.setProperty()
-        # self.setStyleSheet("background-color: red;")
+        self.setAutoFillBackground(True)
+        self.setStyleSheet("background-color: red;")
 
         self.image_label = QLabel(self)
         self.image_label.setGeometry(10, 10, 176, 160)
@@ -138,13 +162,12 @@ class Vignette(QWidget):
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() is Qt.MouseButton.LeftButton:
             print(self.titre_label.text())
-            self.setProperty("clicked", True)
 
         return super().mousePressEvent(event)
 
     def mouseReleaseEvent(self, event):
         if event.button() is Qt.MouseButton.LeftButton:
-            self.setProperty("clicked", False)
+            pass
         
         return super().mouseReleaseEvent(event)
     
