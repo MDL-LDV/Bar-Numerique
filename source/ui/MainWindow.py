@@ -45,7 +45,18 @@ class MainWindow(QMainWindow):
         )
 
         self.menu_bar = self.menuBar()
-        self.menu_bar.setStyleSheet("QMenu::item:selected { color: black; background-color: #D5D5D5; border: none; } QMenuBar::item:selected { background-color: #D5D5D5; } QMenuBar::item:selected#burger { background-color: transparent; }")
+        self.menu_bar.setStyleSheet(
+            """QMenu::item:selected {
+                color: black; background-color: #D5D5D5; border: none; 
+            } 
+            QMenuBar::item:selected { 
+                background-color: #D5D5D5; 
+            } 
+            QMenuBar::item:selected#burger { 
+                background-color: transparent; 
+            }
+            """
+        )
         burger = QPixmap("assets/burger.svg")
         self.menu_burger = QAction(self.menu_bar)
         self.menu_burger.setObjectName("burger")

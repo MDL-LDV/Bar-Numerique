@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from PySide6.QtWidgets import (QListWidget, QWidget, QListView, 
     QListWidgetItem, QLabel)
-from PySide6.QtCore import (QFileInfo, QFile, QDir, QJsonDocument, QJsonArray, 
+from PySide6.QtGui import QMouseEvent
+from PySide6.QtCore import (QFileInfo, QDir, QJsonDocument, QJsonArray, 
     QJsonValue, QSize, Qt)
-from PySide6.QtGui import QColor
 
 from os.path import exists as os_exists
 
@@ -41,6 +41,11 @@ def get_chemin(filename: str, dirname: str = "") -> str | None:
             raise NameError(f"Directory {dirname} does not exist")
 
 
+class NewQListProduits(QWidget):
+    def __init__(self, parent: QWidget):
+        super().__init__(parent)
+
+
 class QListProduits(QListWidget):
     def __init__(self, parent: QWidget):
         super().__init__(parent)
@@ -53,17 +58,17 @@ class QListProduits(QListWidget):
             """QListWidget {
                 font: bold 20px; 
             }
-            QListWidget::item { 
+            QListWidget::item {
                 background-color: transparent; 
                 border: 2px solid black; 
                 border-radius: 20px; 
             }
-            QListWidget::item {
-                border-radius: 20px; 
-                background: transparent;
+            QListWidget::item:focus {
             }
-            QListView::item:focus{
-                background-color: yellow;
+            /* removing the focus selection */
+            QListView
+            {
+                outline: none;
             }
         """)
         # https://forum.qt.io/topic/18888/how-to-remove-focus-rectangle-on-qlistview-and-similar-using-qstyleditemdelegate-with-style-sheets/12
@@ -73,7 +78,6 @@ class QListProduits(QListWidget):
         # self.setViewMode(QListView.ViewMode.IconMode)
         self.setSelectionRectVisible(False)
         self.setSpacing(5)
-        self.itemClicked.connect(self.add_produit)
         self.setResizeMode(QListView.ResizeMode.Adjust)
         self.setItemAlignment(Qt.AlignmentFlag.AlignHCenter)
 
@@ -99,42 +103,21 @@ class QListProduits(QListWidget):
             w.setTitre(key)
             w.setColor(value["color"])
             item.setFlags(Qt.ItemFlag.ItemIsEnabled)
-            
             item.setSizeHint(w.sizeHint())
             self.setItemWidget(item, w)
     
     def minimumSizeHint(self):
         # return super().minimumSizeHint()
         return QSize(0, 0)
-    
-    def focusInEvent(self, event):
-        if event.reason() is not Qt.FocusReason.MouseFocusReason:
-            self.clearFocus()
-
-        return super().focusInEvent(event)
-    
-    def mouseDoubleClickEvent(self, event):
-        self.clearFocus()
-        return super().mouseDoubleClickEvent(event)
-    
-    def mousePressEvent(self, event):
-        if event.button() is Qt.MouseButton.RightButton:
-            self.clearFocus()
-        return super().mousePressEvent(event)
-
-    def add_produit(self, item: QListWidgetItem) -> None:
-        item.setSelected(False)
-        self.clearFocus()
-        
-        # index = self.indexFromItem(item)
-        print(self.itemWidget(item).titre_label.text())
 
 
 class Vignette(QWidget):
-    def __init__(self, parent: Optional[QWidget] = None):
+    def __init__(self, parent: QWidget):
         super().__init__(parent)
+        self.setProperty("clicked", True)
         self.setFixedSize(200, 250)
-        self.setStyleSheet("QWidget { background-color: transparent; } QWidget:selected {  }")
+        self.setProperty()
+        # self.setStyleSheet("background-color: red;")
 
         self.image_label = QLabel(self)
         self.image_label.setGeometry(10, 10, 176, 160)
@@ -151,6 +134,19 @@ class Vignette(QWidget):
     def setColor(self, color: str) -> None:
         self.image_label.setStyleSheet(
             f"{self.image_label_style} background-color: {color};")
+    
+    def mousePressEvent(self, event: QMouseEvent):
+        if event.button() is Qt.MouseButton.LeftButton:
+            print(self.titre_label.text())
+            self.setProperty("clicked", True)
+
+        return super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if event.button() is Qt.MouseButton.LeftButton:
+            self.setProperty("clicked", False)
+        
+        return super().mouseReleaseEvent(event)
     
     def sizeHint(self):
         # return super().sizeHint()
