@@ -1,0 +1,18 @@
+import datetime as dt
+from dataclasses import dataclass
+from decimal import Decimal, getcontext
+
+@dataclass
+class DataCore:
+    """
+    Purpose: defying the properties in use in the main class
+    """
+
+    date: dt.datetime = dt.datetime.today()
+    money: float = 0
+    payment: list[str] = ["CB", "cash"]
+    itemVendu: list[str] = ["""truc vendu au bar a ajouter"""]
+
+    def float_to_decimal(number:float) -> Decimal:
+        getcontext().prec = 28#number of rounding point
+        return Decimal(number)

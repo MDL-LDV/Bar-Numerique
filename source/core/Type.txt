@@ -1,0 +1,17 @@
+In the Core part:
+    MethodPayment = ["CB", "cash"]
+    itemVendu = [truc vendu au bar]
+
+    JSON: -> enregistrement païment 
+        (date: datetime.datetime.today()):[
+            TotalMoney: decimal.Decimal,
+            Commande(s): [
+                [
+                ?(name:str),
+                MethodPayment: ["CB", "Cash"],
+                amount: decimal.Decimal,
+                hour: datetime.datetime.now(),
+                item: itemVendu[]
+                ]
+            ]
+        ]
