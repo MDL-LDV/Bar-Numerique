@@ -3,12 +3,12 @@ from __future__ import annotations
 from PySide6.QtWidgets import (QListWidget, QWidget, QListView, 
     QListWidgetItem, QLabel, QStyledItemDelegate, QStyleOptionViewItem, QStyle)
 from PySide6.QtGui import QMouseEvent, QColor, QPainter
-from PySide6.QtCore import (QFileInfo, QDir, QJsonDocument, QJsonArray, 
+from PySide6.QtCore import (QFileInfo, QDir, QJsonDocument, Signal, 
     QJsonValue, QSize, Qt, QModelIndex, QPersistentModelIndex)
 
-from os.path import exists as os_exists
+from core.Produit import ProduitData
 
-from typing import Optional
+from os.path import exists as os_exists
 
 
 class CustomDelegate(QStyledItemDelegate):
@@ -63,6 +63,8 @@ def get_chemin(filename: str, dirname: str = "") -> str | None:
 
 
 class QListProduits(QListWidget):
+    produitClicked = Signal(ProduitData)
+
     def __init__(self, parent: QWidget):
         super().__init__(parent)
         self.chemin_fichier_produits = get_chemin("produits.json", "source")
@@ -92,13 +94,16 @@ class QListProduits(QListWidget):
 
         self.setFlow(QListView.Flow.LeftToRight)
         self.setWrapping(True)
-        self.setSelectionRectVisible(False)
-        self.setSpacing(5)
         self.setResizeMode(QListView.ResizeMode.Adjust)
         self.setItemAlignment(Qt.AlignmentFlag.AlignHCenter)
+        
+        self.setSelectionRectVisible(False)
+        self.setSpacing(5)
 
         self.setItemDelegate(CustomDelegate(self))
-        self.itemClicked.connect(lambda item: print(item.data(0)))
+        # 
+        self.itemClicked.connect(lambda item: self.produitClicked.emit(item.data(-1)))
+        self.itemDoubleClicked.connect(lambda item: self.produitClicked.emit(item.data(-1)))
 
         self.fill()
 
@@ -125,8 +130,10 @@ class QListProduits(QListWidget):
 
             item = QListWidgetItem(self)
             item.setData(Qt.ItemDataRole.DisplayRole, key)
+            p = ProduitData(nom=key, prix=value["price"], color=value["color"])
+            item.setData(-1, p)
             colour = QColor(value["color"])
-            print(colour)
+            # print(colour)
             item.setData(Qt.ItemDataRole.DecorationRole, colour)
             item.setData(Qt.ItemDataRole.TextAlignmentRole, Qt.AlignmentFlag.AlignCenter)
             self.addItem(item)

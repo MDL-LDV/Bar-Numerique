@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QWidget, QSplitter
 from typing import Optional
 
 from .QListProduits import QListProduits
+from .QPaymentBar import QPaymentBar
 
 
 class CaissePage(QSplitter):
@@ -15,8 +16,8 @@ class CaissePage(QSplitter):
         self.produits = QListProduits(self)
         self.addWidget(self.produits)
         
-        self.payment = QWidget()
-        self.payment.setStyleSheet("background-color: yellow;")
+        self.payment = QPaymentBar(self)
+        self.produits.produitClicked.connect(self.payment.addProduit)
         self.addWidget(self.payment)
 
         self.setSizes([4, 1])
