@@ -168,7 +168,8 @@ class Vignette(QWidget):
     
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() is Qt.MouseButton.LeftButton:
-            print(self.titre_label.text())
+            # print(self.titre_label.text())
+            pass
 
         return super().mousePressEvent(event)
 

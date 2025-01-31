@@ -44,7 +44,7 @@ class QNavigationBar(QWidget):
         self.onglets.itemPressed.connect(self.dispatcher)
         # self.map_index_call: dict[QListWidgetItemId: callable] = {}
 
-    def addItem(self: QNavigationBar, item: QListWidgetItemId, f: callable)\
+    def addItem(self: QNavigationBar, item: QListWidgetItemId, f: callable | None = None)\
             -> None:
         if isinstance(item, QListWidgetItemId):
             item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)

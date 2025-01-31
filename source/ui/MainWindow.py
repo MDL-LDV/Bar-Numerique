@@ -79,7 +79,7 @@ class MainWindow(QMainWindow):
         item = QListWidgetItemId()
         item.identifiant = "Caisse"
         item.setData(0, "Caisse")
-        self.navbar.addItem(item, lambda: print("Caisse"))
+        self.navbar.addItem(item)
 
         # self.caisse_widget = QWidget()
         # layout = QHBoxLayout(self.caisse_widget)

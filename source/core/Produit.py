@@ -1,10 +1,8 @@
-from pydantic import BaseModel, PositiveFloat, Field
+from pydantic import BaseModel, PositiveFloat, Field, ConfigDict
 
 class ProduitData(BaseModel):
-    nom: str = Field(..., frozen=True)
-    prix: PositiveFloat = Field(..., frozen=True)
-    color: str = Field(..., frozen=True)
+    model_config = ConfigDict(extra='forbid', frozen=True)
 
-
-class ListeProduits(list[ProduitData]):
-    pass
+    nom: str = Field(...)
+    prix: PositiveFloat = Field(...)
+    color: str = Field(...)
