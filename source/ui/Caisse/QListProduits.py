@@ -5,6 +5,7 @@ from PySide6.QtWidgets import (QListWidget, QWidget, QListView,
 from PySide6.QtGui import QMouseEvent, QColor, QPainter
 from PySide6.QtCore import (QFileInfo, QDir, QJsonDocument, Signal, 
     QJsonValue, QSize, Qt, QModelIndex, QPersistentModelIndex)
+from decimal import Decimal
 
 from core.Produit import ProduitData
 
@@ -101,9 +102,6 @@ class QListProduits(QListWidget):
         self.setSpacing(5)
 
         self.setItemDelegate(CustomDelegate(self))
-        # 
-        self.itemClicked.connect(lambda item: self.produitClicked.emit(item.data(-1)))
-        self.itemDoubleClicked.connect(lambda item: self.produitClicked.emit(item.data(-1)))
 
         self.fill()
 
@@ -114,6 +112,25 @@ class QListProduits(QListWidget):
         
         self.fichier_produits = QJsonDocument.fromJson(data)
         self.produits = self.fichier_produits.object()
+    
+    def mousePressEvent(self, event):
+        super().mousePressEvent(event)
+        
+        for i in range(self.count()):
+            item: QListWidgetItem = self.item(i)
+            if item.isSelected():
+                self.addProduit(item)
+    
+    def mouseDoubleClickEvent(self, event):
+        super().mouseDoubleClickEvent(event)
+        
+        for i in range(self.count()):
+            item: QListWidgetItem = self.item(i)
+            if item.isSelected():
+                self.addProduit(item)
+
+    def addProduit(self, item):
+        self.produitClicked.emit(item.data(-1))
     
     def fill(self: QListProduits) -> None:
         #! TODO: dataclass pour les produits et donc retirer qt de la gestion des fichiers
@@ -130,7 +147,7 @@ class QListProduits(QListWidget):
 
             item = QListWidgetItem(self)
             item.setData(Qt.ItemDataRole.DisplayRole, key)
-            p = ProduitData(nom=key, prix=value["price"], color=value["color"])
+            p = ProduitData(nom=key, prix=Decimal(str(value["price"])), color=value["color"])
             item.setData(-1, p)
             colour = QColor(value["color"])
             # print(colour)

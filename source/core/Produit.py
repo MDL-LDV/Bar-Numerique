@@ -1,8 +1,9 @@
-from pydantic import BaseModel, PositiveFloat, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict
+from decimal import Decimal
 
 class ProduitData(BaseModel):
     model_config = ConfigDict(extra='forbid', frozen=True)
 
     nom: str = Field(...)
-    prix: PositiveFloat = Field(...)
+    prix: Decimal = Field(...)
     color: str = Field(...)
