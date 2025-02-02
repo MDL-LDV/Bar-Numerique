@@ -4,33 +4,56 @@ from PySide6.QtWidgets import (QListWidget, QWidget, QListView,
     QListWidgetItem, QLabel, QStyledItemDelegate, QStyleOptionViewItem, QStyle)
 from PySide6.QtGui import QMouseEvent, QColor, QPainter
 from PySide6.QtCore import (QFileInfo, QDir, QJsonDocument, Signal, 
-    QJsonValue, QSize, Qt, QModelIndex, QPersistentModelIndex)
+    QAbstractItemModel, QSize, Qt, QModelIndex, QPersistentModelIndex, QRect)
 from decimal import Decimal
 
 from core.Produit import ProduitData
 
 from os.path import exists as os_exists
 
+p = True
+
 
 class CustomDelegate(QStyledItemDelegate):
     def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex | QPersistentModelIndex):
         # TODO: on selected
-        # Appeler la méthode de base pour conserver le style par défaut
+        global p
         if QStyle.StateFlag.State_Selected in option.state :
-            option.state = option.state & ~QStyle.StateFlag.State_Selected
-        super().paint(painter, option, index)
+            option.state = (option.state & ~QStyle.StateFlag.State_Selected 
+                            & ~QStyle.StateFlag.State_HasFocus)
+        # Appeler la méthode de base pour conserver le style par défaut
+        # print(option.__dir__())
+        """
+['__new__', '__init__', '__copy__', 'displayAlignment', 'decorationAlignment', 
+'textElideMode', 'decorationPosition', 'decorationSize', 'font', 'showDecorationSelected', 
+'features', 'locale', 'widget', 'index', 'checkState', 'icon', 'text', 'viewItemPosition', 
+'backgroundBrush', '__doc__', '__module__', 'StyleOptionType', 'StyleOptionVersion', 
+'Position', 'ViewItemFeature', 'ViewItemPosition', '__repr__', 'initFrom', 
+'version', 'type', 'state', 'direction', 'rect', 'fontMetrics', 'palette', 
+'styleObject', 'OptionType', '__getattribute__', '__setattr__', '__delattr__', 
+'__dict__', '__hash__', '__str__', '__lt__', '__le__', '__eq__', '__ne__', 
+'__gt__', '__ge__', '__reduce_ex__', '__reduce__', '__getstate__', 
+'__subclasshook__', '__init_subclass__', '__format__', '__sizeof__', '__dir__', 
+'__class__']
+        """
+        # if p:
+        #     print(option.decorationPosition)
+        #     p = False
+        option.decorationPosition = QStyleOptionViewItem.Position.Top
+        decorationRect = option.rect.__copy__()
+        decorationRect.adjust(10, 10, -10, -100)
+        print(option.rect, decorationRect)
+        option.decorationSize = decorationRect.size()
 
-        # painter.save()
-        # pen = painter.pen()
-        # pen.setColor(Qt.red)
-        # painter.setPen(pen)
-        # painter.drawRect(option.rect.adjusted(1, 1, -1, -1))
-        # print("option", option.state)
-        # painter.restore()
+        super().paint(painter, option, index)
     
     def sizeHint(self, option, index):
         # return super().sizeHint(option, index)
         return QSize(200, 250)
+    
+    def setModelData(self, editor: QWidget, model: QAbstractItemModel, index: QModelIndex | QPersistentModelIndex):
+        print(editor, model)
+        return super().setModelData(editor, model, index)
 
 
 def get_chemin(filename: str, dirname: str = "") -> str | None:
@@ -80,7 +103,8 @@ class QListProduits(QListWidget):
             QListWidget::item {
                 background-color: transparent; 
                 border: 2px solid black; 
-                border-radius: 20px; 
+                border-radius: 20px;
+                padding-top: 10px
             }
             /* removing the focus selection */
             QListWidget::item:focus {
