@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from PySide6.QtWidgets import (QListWidget, QWidget, QListView, 
-    QListWidgetItem, QLabel, QStyledItemDelegate, QStyleOptionViewItem, QStyle)
-from PySide6.QtGui import QMouseEvent, QColor, QPainter
+    QListWidgetItem, QLabel, QStyledItemDelegate, QStyleOptionViewItem, QStyle, 
+    QApplication, QDialog)
+from PySide6.QtGui import QMouseEvent, QColor, QPainter, QIcon, QPixmap
 from PySide6.QtCore import (QFileInfo, QDir, QJsonDocument, Signal, 
     QAbstractItemModel, QSize, Qt, QModelIndex, QPersistentModelIndex, QRect)
 from decimal import Decimal
@@ -11,18 +12,50 @@ from core.Produit import ProduitData
 
 from os.path import exists as os_exists
 
-p = True
+p = []
+
+def print_unique(key, *args, **kwargs):
+    global p
+    if key not in p:
+        print(*args, **kwargs)
+        p.append(key)
 
 
 class CustomDelegate(QStyledItemDelegate):
     def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex | QPersistentModelIndex):
+        self.initStyleOption(option, index)
+        painter.save()
+
+        widget: QWidget = option.widget
+        style: QStyle = widget.style() if widget else QApplication.style()
+        proxy = style.proxy
+        listWidget: QListProduits = self.parent()
+        item = listWidget.itemFromIndex(index)
+
         # TODO: on selected
-        global p
         if QStyle.StateFlag.State_Selected in option.state :
             option.state = (option.state & ~QStyle.StateFlag.State_Selected 
                             & ~QStyle.StateFlag.State_HasFocus)
-        # Appeler la méthode de base pour conserver le style par défaut
-        # print(option.__dir__())
+        
+        print_unique(1, option.__dir__())
+
+        option.decorationPosition = QStyleOptionViewItem.Position.Top
+        decorationRect = option.rect.adjusted(15, 15, -15, -100)
+        option.decorationSize = decorationRect.size()
+        painter.setBrush(item.data(Qt.ItemDataRole.DecorationRole))
+        painter.drawRoundedRect(decorationRect, 10, 10, Qt.SizeMode.AbsoluteSize)
+
+        x = 1
+        y = 1
+        painter.drawText(x, y, item.data(Qt.ItemDataRole.AccessibleTextRole))
+        """
+        iconRect = proxy().subElementRect(QStyle.SubElement.SE_ItemViewItemDecoration, option, widget)
+        option.icon.paint(painter, iconRect, option.decorationAlignment, QIcon.Mode.Normal, QIcon.State.On)
+        """
+
+        option.decorationSize = QSize()
+        painter.restore()
+        # super().paint(painter, option, index)
         """
 ['__new__', '__init__', '__copy__', 'displayAlignment', 'decorationAlignment', 
 'textElideMode', 'decorationPosition', 'decorationSize', 'font', 'showDecorationSelected', 
@@ -36,16 +69,6 @@ class CustomDelegate(QStyledItemDelegate):
 '__subclasshook__', '__init_subclass__', '__format__', '__sizeof__', '__dir__', 
 '__class__']
         """
-        # if p:
-        #     print(option.decorationPosition)
-        #     p = False
-        option.decorationPosition = QStyleOptionViewItem.Position.Top
-        decorationRect = option.rect.__copy__()
-        decorationRect.adjust(10, 10, -10, -100)
-        print(option.rect, decorationRect)
-        option.decorationSize = decorationRect.size()
-
-        super().paint(painter, option, index)
     
     def sizeHint(self, option, index):
         # return super().sizeHint(option, index)
@@ -101,7 +124,8 @@ class QListProduits(QListWidget):
                 font: bold 20px; 
             }
             QListWidget::item {
-                background-color: transparent; 
+                background-color: transparent;
+                color: black;
                 border: 2px solid black; 
                 border-radius: 20px;
                 padding-top: 10px
