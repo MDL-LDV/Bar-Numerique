@@ -3,7 +3,7 @@ from __future__ import annotations
 from PySide6.QtWidgets import (QListWidget, QWidget, QListView, 
     QListWidgetItem, QLabel, QStyledItemDelegate, QStyleOptionViewItem, QStyle, 
     QApplication, QDialog)
-from PySide6.QtGui import QMouseEvent, QColor, QPainter, QIcon, QPixmap
+from PySide6.QtGui import QMouseEvent, QColor, QPainter, QFont
 from PySide6.QtCore import (QFileInfo, QDir, QJsonDocument, Signal, 
     QAbstractItemModel, QSize, Qt, QModelIndex, QPersistentModelIndex, QRect)
 from decimal import Decimal
@@ -47,16 +47,19 @@ class CustomDelegate(QStyledItemDelegate):
         painter.setPen(Qt.GlobalColor.transparent)
         painter.drawRoundedRect(decorationRect, 10, 10, Qt.SizeMode.AbsoluteSize)
 
-        nomRect = option.rect.adjusted(15, 20 + decorationRect.height(), -15, -15)
-        prixRect = option.rect.adjusted(15, 20 + decorationRect.height(), -15, -15)
+        nomRect = option.rect.adjusted(15, 30 + decorationRect.height(), -15, -15)
+        prixRect = option.rect.adjusted(15, 60 + decorationRect.height(), -15, -15)
         
         painter.setPen(Qt.GlobalColor.black)
         painter.drawText(nomRect, item.data(Qt.ItemDataRole.DisplayRole), Qt.AlignmentFlag.AlignLeft)
-
+        painter.setPen(QColor(0, 47, 203, 255))
+        f = QFont()
+        f.setPixelSize(17)
+        painter.setFont(f)
+        painter.drawText(prixRect, str(item.data(-1).prix) + " €", Qt.AlignmentFlag.AlignLeft)
 
         painter.setBrush(Qt.GlobalColor.transparent)
         painter.setPen(Qt.GlobalColor.black)
-        print_unique(2, option.rect.adjusted(1, 1, -1, -1), option.rect)
         painter.drawRoundedRect(option.rect.adjusted(1, 1, -1, -1), 25, 25, Qt.SizeMode.AbsoluteSize)
         """
         iconRect = proxy().subElementRect(QStyle.SubElement.SE_ItemViewItemDecoration, option, widget)

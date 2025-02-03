@@ -4,8 +4,8 @@ from PySide6.QtWidgets import (QWidget, QFrame, QVBoxLayout, QHBoxLayout, QLabel
     QGridLayout, QPushButton)
 from PySide6.QtCore import (Signal, QSize, Qt)
 from core.Produit import ProduitData
+from core.core import Core, PaymentMethod
 from decimal import Decimal
-
 from typing import Optional
 
 
@@ -93,6 +93,8 @@ class Panier(QWidget):
         self.liste = QVBoxLayout(self)
         self.liste.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.liste_produits: dict[ProduitData: EntreeProduit] = {}
+
+        self.iterator = 0
     
     def sizeHint(self):
         # return super().sizeHint()
@@ -123,21 +125,29 @@ class Panier(QWidget):
 
 
 class Payment(QWidget):
-    def __init__(self: Payment, parent: QWidget):
+    def __init__(self: Payment, parent: QWidget, panier: Panier):
         super().__init__(parent)
         self.liste_produits: list[ProduitData] = []
         self.prix_total: Decimal = Decimal()
+        self.panier = panier
         self.setStyleSheet(
             """QLabel { 
                 font-size: 25px; 
             }
             QPushButton {
                 font-size: 18px;
+                border: 1px solid black;
+                border-radius: 10px;
+                background-color: #CDD0DA;
+            }
+            QPushButton:pressed {
+                background-color: #8A91A8;
             }
             """
         )
 
         self.div_mid = QVBoxLayout(self)
+        self.div_mid.setSpacing(0)
         self.div_top = QGridLayout()
         self.div_mid.addItem(self.div_top)
         self.div_bot = QGridLayout()
@@ -152,12 +162,25 @@ class Payment(QWidget):
         self.div_top.addWidget(self.prix_label, 0, 1, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight)
 
         self.cash_button = QPushButton(self)
+        self.cash_button.setFixedSize(120, 70)
+        self.cash_button.pressed.connect(lambda: self.encaisser(PaymentMethod.Cash))
         self.cash_button.setText("Espèces")
         self.div_bot.addWidget(self.cash_button, 0, 0, Qt.AlignmentFlag.AlignCenter)
 
         self.carte_button = QPushButton(self)
+        self.carte_button.setFixedSize(120, 70)
+        self.carte_button.pressed.connect(lambda: self.encaisser(PaymentMethod.CB))
         self.carte_button.setText("Carte")
         self.div_bot.addWidget(self.carte_button, 0, 1, Qt.AlignmentFlag.AlignCenter)
+    
+    def encaisser(self: Payment, methode: PaymentMethod) -> None:
+        print("payment en", methode)
+        prix = Decimal()
+        for produit in self.panier.liste_produits:
+            prix += self.panier.liste_produits[produit].nombre * produit.prix
+
+        c = Core()
+        c.add_payment_to_json(methode, prix, [ProduitData(nom="Café", prix=Decimal("0.4"), color='ffffff')])
     
     def sizeHint(self: Payment):
         # return super().sizeHint()
@@ -190,12 +213,12 @@ class QPaymentBar(QSplitter):
         self.panier = Panier(self)
         self.addWidget(self.panier)
 
-        self.payment = Payment(self)
+        self.payment = Payment(self, self.panier)
         self.panier.produitAdded.connect(self.payment.addProduit)
         self.panier.produitRemoved.connect(self.payment.removeProduit)
         self.addWidget(self.payment)
 
-        self.setSizes([4, 1])
+        self.setSizes([7, 2])
     
     def addProduit(self, produit: ProduitData):
         self.panier.addProduit(produit)
