@@ -113,6 +113,8 @@ class Core(DataCore):
                         case "Sirop":
                             Sirop[0] += 1
                             Sirop[1] += 0.1
+                        case _:
+                            raise "Unknown product name {Nomproduit}"
 
 
         repr_debut = datedebut.day + r"/" + datedebut.month + r"/" + datedebut.year
