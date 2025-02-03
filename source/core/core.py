@@ -1,17 +1,15 @@
 from Helper import DataCore
 from datetime import datetime as dt
 from decimal import Decimal
-from PySide6.QtGui import QPdfWriter
 import json as js
-import aspose.pdf as pdf
+import csv
 
 class Core(DataCore):
     def __init__(self):
         super().__init__(self)
-        super().float_to_decimal()
 
 
-    def add_payment_to_json(self, method: str, montant: float, itemVendu: [str], name: str = "nobody"):
+    def add_payment_to_json(self, method: str, montant: float, itemVendu: list[str], name: str = "nobody"):
         if (method in self.payment):
             data = js.load("Payment.json")
             if (dt.today() in data):
@@ -38,29 +36,33 @@ class Core(DataCore):
         else:
             raise "Unknown method of payment"
 
-    def pdfPayment (self, name: str|None = None, datedebut: dt = dt.today(), datefin: dt = dt.today()):
-
-        
-
-        if (name == None):
-            name = "{datedebut} to {datefin}"
-
+    def JsonToCSV (self, name: str, datedebut: dt = dt.today(), datefin: dt = dt.today()):       
         json_data = js.load("Payment.json")
 
-        doc = pdf.Document()
-        page:pdf.Document.pages = doc.pages.add()
+        with open(name, "w+") as file:
+            writer = csv.writer(file)
+            writer.writerows(
+                    ["Produits", "Prix", "Quantités", "Totaux", "Total hebdomadaire"],
+                    ["Cappuccino", 0.40, 0, 0, 0],
+                    ["Café", 0.40, 0, 0, 0],
+                    ["1/2 Café", 0.20, 0, 0, 0],
+                    ["Chocolat Chaud", 0.40, 0, 0, 0],
+                    ["Thé", 0.15, 0, 0, 0],
+                    ["Jus de Pomme", 0.40, 0, 0, 0],
+                    ["Grand Sirop", 0.30, 0, 0, 0],
+                    ["Sirop", 0.10, 0, 0, 0]
+                    ["", "", "", "", 0]
+                )
 
-        currentdate = datedebut
-        while (currentdate <= datedebut):
-            jsondatedata: list[Decimal, list[list[str, str, Decimal, dt, list[str]]]]|None = json_data[currentdate]
-
-            if not jsondatedata:
-                text = pdf.TeXFragment("{currentdate}:\n\tNo Record")
-            else:
-                text = pdf.TeXFragment("""{currentdate}:
-                                            Montant des achats: {jsondatedata[0]}
-                                            {printable(jsondatedata[1])}""")
-        page.paragraphs.add(text)
+            currentdate = datedebut
+            while (currentdate <= datedebut):
+                jsondatedata: list[Decimal, list[list[str, str, Decimal, dt, list[str]]]]|None = json_data[currentdate]
+                
+                
+            
+    
+    
+                
 
         
             

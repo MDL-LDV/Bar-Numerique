@@ -11,7 +11,8 @@ class DataCore:
     date: dt.datetime = dt.datetime.today()
     money: float = 0
     payment: list[str] = ["CB", "cash"]
-    itemVendu: list[str] = ["""truc vendu au bar a ajouter"""]
+    itemVendu: list[str] = ["Cappuccino", "Café", "1/2 Café", "Chocolat Chaud",
+                            "Thé", "Jus de Pomme", "Grand Sirop", "Sirop"]
 
     def float_to_decimal(number:float) -> Decimal:
         getcontext().prec = 28#number of rounding point
