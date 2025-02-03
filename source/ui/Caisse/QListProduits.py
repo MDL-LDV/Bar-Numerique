@@ -1,35 +1,82 @@
 from __future__ import annotations
 
 from PySide6.QtWidgets import (QListWidget, QWidget, QListView, 
-    QListWidgetItem, QLabel, QStyledItemDelegate, QStyleOptionViewItem, QStyle)
-from PySide6.QtGui import QMouseEvent, QColor, QPainter
-from PySide6.QtCore import (QFileInfo, QDir, QJsonDocument, QJsonArray, 
-    QJsonValue, QSize, Qt, QModelIndex, QPersistentModelIndex)
+    QListWidgetItem, QLabel, QStyledItemDelegate, QStyleOptionViewItem, QStyle, 
+    QApplication, QDialog)
+from PySide6.QtGui import QMouseEvent, QColor, QPainter, QIcon, QPixmap
+from PySide6.QtCore import (QFileInfo, QDir, QJsonDocument, Signal, 
+    QAbstractItemModel, QSize, Qt, QModelIndex, QPersistentModelIndex, QRect)
+from decimal import Decimal
+
+from core.Produit import ProduitData
 
 from os.path import exists as os_exists
 
-from typing import Optional
+p = []
+
+def print_unique(key, *args, **kwargs):
+    global p
+    if key not in p:
+        print(*args, **kwargs)
+        p.append(key)
 
 
 class CustomDelegate(QStyledItemDelegate):
     def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex | QPersistentModelIndex):
-        # TODO: on selected
-        # Appeler la méthode de base pour conserver le style par défaut
-        if QStyle.StateFlag.State_Selected in option.state :
-            option.state = option.state & ~QStyle.StateFlag.State_Selected
-        super().paint(painter, option, index)
+        self.initStyleOption(option, index)
+        painter.save()
 
-        # painter.save()
-        # pen = painter.pen()
-        # pen.setColor(Qt.red)
-        # painter.setPen(pen)
-        # painter.drawRect(option.rect.adjusted(1, 1, -1, -1))
-        # print("option", option.state)
-        # painter.restore()
+        widget: QWidget = option.widget
+        style: QStyle = widget.style() if widget else QApplication.style()
+        proxy = style.proxy
+        listWidget: QListProduits = self.parent()
+        item = listWidget.itemFromIndex(index)
+
+        # TODO: on selected
+        if QStyle.StateFlag.State_Selected in option.state :
+            option.state = (option.state & ~QStyle.StateFlag.State_Selected 
+                            & ~QStyle.StateFlag.State_HasFocus)
+        
+        print_unique(1, option.__dir__())
+
+        option.decorationPosition = QStyleOptionViewItem.Position.Top
+        decorationRect = option.rect.adjusted(15, 15, -15, -100)
+        option.decorationSize = decorationRect.size()
+        painter.setBrush(item.data(Qt.ItemDataRole.DecorationRole))
+        painter.drawRoundedRect(decorationRect, 10, 10, Qt.SizeMode.AbsoluteSize)
+
+        x = 1
+        y = 1
+        painter.drawText(x, y, item.data(Qt.ItemDataRole.AccessibleTextRole))
+        """
+        iconRect = proxy().subElementRect(QStyle.SubElement.SE_ItemViewItemDecoration, option, widget)
+        option.icon.paint(painter, iconRect, option.decorationAlignment, QIcon.Mode.Normal, QIcon.State.On)
+        """
+
+        option.decorationSize = QSize()
+        painter.restore()
+        # super().paint(painter, option, index)
+        """
+['__new__', '__init__', '__copy__', 'displayAlignment', 'decorationAlignment', 
+'textElideMode', 'decorationPosition', 'decorationSize', 'font', 'showDecorationSelected', 
+'features', 'locale', 'widget', 'index', 'checkState', 'icon', 'text', 'viewItemPosition', 
+'backgroundBrush', '__doc__', '__module__', 'StyleOptionType', 'StyleOptionVersion', 
+'Position', 'ViewItemFeature', 'ViewItemPosition', '__repr__', 'initFrom', 
+'version', 'type', 'state', 'direction', 'rect', 'fontMetrics', 'palette', 
+'styleObject', 'OptionType', '__getattribute__', '__setattr__', '__delattr__', 
+'__dict__', '__hash__', '__str__', '__lt__', '__le__', '__eq__', '__ne__', 
+'__gt__', '__ge__', '__reduce_ex__', '__reduce__', '__getstate__', 
+'__subclasshook__', '__init_subclass__', '__format__', '__sizeof__', '__dir__', 
+'__class__']
+        """
     
     def sizeHint(self, option, index):
         # return super().sizeHint(option, index)
         return QSize(200, 250)
+    
+    def setModelData(self, editor: QWidget, model: QAbstractItemModel, index: QModelIndex | QPersistentModelIndex):
+        print(editor, model)
+        return super().setModelData(editor, model, index)
 
 
 def get_chemin(filename: str, dirname: str = "") -> str | None:
@@ -63,6 +110,8 @@ def get_chemin(filename: str, dirname: str = "") -> str | None:
 
 
 class QListProduits(QListWidget):
+    produitClicked = Signal(ProduitData)
+
     def __init__(self, parent: QWidget):
         super().__init__(parent)
         self.chemin_fichier_produits = get_chemin("produits.json", "source")
@@ -75,9 +124,11 @@ class QListProduits(QListWidget):
                 font: bold 20px; 
             }
             QListWidget::item {
-                background-color: transparent; 
+                background-color: transparent;
+                color: black;
                 border: 2px solid black; 
-                border-radius: 20px; 
+                border-radius: 20px;
+                padding-top: 10px
             }
             /* removing the focus selection */
             QListWidget::item:focus {
@@ -92,13 +143,13 @@ class QListProduits(QListWidget):
 
         self.setFlow(QListView.Flow.LeftToRight)
         self.setWrapping(True)
-        self.setSelectionRectVisible(False)
-        self.setSpacing(5)
         self.setResizeMode(QListView.ResizeMode.Adjust)
         self.setItemAlignment(Qt.AlignmentFlag.AlignHCenter)
+        
+        self.setSelectionRectVisible(False)
+        self.setSpacing(5)
 
         self.setItemDelegate(CustomDelegate(self))
-        self.itemClicked.connect(lambda item: print(item.data(0)))
 
         self.fill()
 
@@ -109,6 +160,25 @@ class QListProduits(QListWidget):
         
         self.fichier_produits = QJsonDocument.fromJson(data)
         self.produits = self.fichier_produits.object()
+    
+    def mousePressEvent(self, event):
+        super().mousePressEvent(event)
+        
+        for i in range(self.count()):
+            item: QListWidgetItem = self.item(i)
+            if item.isSelected():
+                self.addProduit(item)
+    
+    def mouseDoubleClickEvent(self, event):
+        super().mouseDoubleClickEvent(event)
+        
+        for i in range(self.count()):
+            item: QListWidgetItem = self.item(i)
+            if item.isSelected():
+                self.addProduit(item)
+
+    def addProduit(self, item):
+        self.produitClicked.emit(item.data(-1))
     
     def fill(self: QListProduits) -> None:
         #! TODO: dataclass pour les produits et donc retirer qt de la gestion des fichiers
@@ -125,8 +195,10 @@ class QListProduits(QListWidget):
 
             item = QListWidgetItem(self)
             item.setData(Qt.ItemDataRole.DisplayRole, key)
+            p = ProduitData(nom=key, prix=Decimal(str(value["price"])), color=value["color"])
+            item.setData(-1, p)
             colour = QColor(value["color"])
-            print(colour)
+            # print(colour)
             item.setData(Qt.ItemDataRole.DecorationRole, colour)
             item.setData(Qt.ItemDataRole.TextAlignmentRole, Qt.AlignmentFlag.AlignCenter)
             self.addItem(item)
@@ -161,7 +233,8 @@ class Vignette(QWidget):
     
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() is Qt.MouseButton.LeftButton:
-            print(self.titre_label.text())
+            # print(self.titre_label.text())
+            pass
 
         return super().mousePressEvent(event)
 
