@@ -16,7 +16,7 @@ class CaissePage(QSplitter):
         self.produits = QListProduits(self)
         self.addWidget(self.produits)
         
-        self.payment = QWidget()
+        self.payment = QPaymentBar(self)
         self.produits.produitClicked.connect(self.payment.addProduit)
         self.addWidget(self.payment)
 
