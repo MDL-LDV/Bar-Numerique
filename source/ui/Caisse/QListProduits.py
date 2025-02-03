@@ -11,6 +11,7 @@ from decimal import Decimal
 from core.Produit import ProduitData
 
 from os.path import exists as os_exists
+import sys
 
 p = []
 
@@ -91,42 +92,12 @@ class CustomDelegate(QStyledItemDelegate):
         return super().setModelData(editor, model, index)
 
 
-def get_chemin(filename: str, dirname: str = "") -> str | None:
-    #! TODO: optimiser la fonction, retirer les erreurs en créant le fichier
-    path: QDir = QFileInfo(__file__).absoluteDir()
-
-    if not dirname:
-        while not os_exists(path.path() + filename) and path != path.root():
-            path.cdUp()
-    
-        if path != path.root():
-            return path.filePath(filename)
-        else:
-            raise NameError(f"{filename} does not exists")
-    else:
-        # while path.dirName() != dirname and path != path.root():
-        #     path.cdUp()
-
-        #     print(path.path() == path.root().path())
-
-        index = path.path().find("/" + dirname + "/") + 1
-        if index > 0:
-            path = path.path()[:index] + dirname + "/" + filename
-            
-            if os_exists(path):
-                return path
-            else:
-                raise NameError(f"File {filename} does not exist in the {dirname} directory")
-        else:
-            raise NameError(f"Directory {dirname} does not exist")
-
-
 class QListProduits(QListWidget):
     produitClicked = Signal(ProduitData)
 
     def __init__(self, parent: QWidget):
         super().__init__(parent)
-        self.chemin_fichier_produits = get_chemin("produits.json", "source")
+        self.chemin_fichier_produits = sys.path[0] + "\\produits.json"
         self.fichier_produits: QJsonDocument
         self.produits: dict = {}
 

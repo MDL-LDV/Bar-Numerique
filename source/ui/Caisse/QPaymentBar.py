@@ -4,7 +4,7 @@ from PySide6.QtWidgets import (QWidget, QFrame, QVBoxLayout, QHBoxLayout, QLabel
     QGridLayout, QPushButton)
 from PySide6.QtCore import (Signal, QSize, Qt)
 from core.Produit import ProduitData
-from core.core import Core, PaymentMethod
+from core.core import enregistrer_commande, MethodesPayment, Commande
 from decimal import Decimal
 from typing import Optional
 
@@ -163,24 +163,23 @@ class Payment(QWidget):
 
         self.cash_button = QPushButton(self)
         self.cash_button.setFixedSize(120, 70)
-        self.cash_button.pressed.connect(lambda: self.encaisser(PaymentMethod.Cash))
+        self.cash_button.pressed.connect(lambda: self.encaisser(MethodesPayment.Cash))
         self.cash_button.setText("Espèces")
         self.div_bot.addWidget(self.cash_button, 0, 0, Qt.AlignmentFlag.AlignCenter)
 
         self.carte_button = QPushButton(self)
         self.carte_button.setFixedSize(120, 70)
-        self.carte_button.pressed.connect(lambda: self.encaisser(PaymentMethod.CB))
+        self.carte_button.pressed.connect(lambda: self.encaisser(MethodesPayment.CB))
         self.carte_button.setText("Carte")
         self.div_bot.addWidget(self.carte_button, 0, 1, Qt.AlignmentFlag.AlignCenter)
     
-    def encaisser(self: Payment, methode: PaymentMethod) -> None:
+    def encaisser(self: Payment, methode: MethodesPayment) -> None:
         print("payment en", methode)
         prix = Decimal()
         for produit in self.panier.liste_produits:
             prix += self.panier.liste_produits[produit].nombre * produit.prix
 
-        c = Core()
-        c.add_payment_to_json(methode, prix, [ProduitData(nom="Café", prix=Decimal("0.4"), color='ffffff')])
+        enregistrer_commande(methode, prix, [ProduitData(nom="Café", prix=Decimal("0.4"), color='ffffff')])
     
     def sizeHint(self: Payment):
         # return super().sizeHint()
