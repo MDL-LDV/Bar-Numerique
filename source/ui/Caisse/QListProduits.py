@@ -40,20 +40,27 @@ class CustomDelegate(QStyledItemDelegate):
         print_unique(1, option.__dir__())
 
         option.decorationPosition = QStyleOptionViewItem.Position.Top
-        decorationRect = option.rect.adjusted(15, 15, -15, -100)
+        decorationRect: QRect = option.rect.adjusted(15, 15, -15, -100)
         option.decorationSize = decorationRect.size()
         painter.setBrush(item.data(Qt.ItemDataRole.DecorationRole))
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        painter.setPen(Qt.GlobalColor.transparent)
         painter.drawRoundedRect(decorationRect, 10, 10, Qt.SizeMode.AbsoluteSize)
 
-        x = 1
-        y = 1
-        painter.drawText(x, y, item.data(Qt.ItemDataRole.AccessibleTextRole))
+        displayRect = option.rect.adjusted(15, 15 + decorationRect.height(), -15, -15)
+        
+        painter.setPen(Qt.GlobalColor.black)
+        painter.drawText(displayRect, item.data(Qt.ItemDataRole.DisplayRole), Qt.AlignmentFlag.AlignCenter)
+
+        painter.setBrush(Qt.GlobalColor.transparent)
+        painter.setPen(Qt.GlobalColor.black)
+        print_unique(2, option.rect.adjusted(1, 1, -1, -1), option.rect)
+        painter.drawRoundedRect(option.rect.adjusted(1, 1, -1, -1), 25, 25, Qt.SizeMode.AbsoluteSize)
         """
         iconRect = proxy().subElementRect(QStyle.SubElement.SE_ItemViewItemDecoration, option, widget)
         option.icon.paint(painter, iconRect, option.decorationAlignment, QIcon.Mode.Normal, QIcon.State.On)
         """
 
-        option.decorationSize = QSize()
         painter.restore()
         # super().paint(painter, option, index)
         """
