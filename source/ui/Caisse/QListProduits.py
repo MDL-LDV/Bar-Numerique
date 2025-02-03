@@ -37,7 +37,7 @@ class CustomDelegate(QStyledItemDelegate):
             option.state = (option.state & ~QStyle.StateFlag.State_Selected 
                             & ~QStyle.StateFlag.State_HasFocus)
         
-        print_unique(1, option.__dir__())
+        # print_unique(1, option.__dir__())
 
         option.decorationPosition = QStyleOptionViewItem.Position.Top
         decorationRect: QRect = option.rect.adjusted(15, 15, -15, -100)
@@ -47,10 +47,12 @@ class CustomDelegate(QStyledItemDelegate):
         painter.setPen(Qt.GlobalColor.transparent)
         painter.drawRoundedRect(decorationRect, 10, 10, Qt.SizeMode.AbsoluteSize)
 
-        displayRect = option.rect.adjusted(15, 15 + decorationRect.height(), -15, -15)
+        nomRect = option.rect.adjusted(15, 20 + decorationRect.height(), -15, -15)
+        prixRect = option.rect.adjusted(15, 20 + decorationRect.height(), -15, -15)
         
         painter.setPen(Qt.GlobalColor.black)
-        painter.drawText(displayRect, item.data(Qt.ItemDataRole.DisplayRole), Qt.AlignmentFlag.AlignCenter)
+        painter.drawText(nomRect, item.data(Qt.ItemDataRole.DisplayRole), Qt.AlignmentFlag.AlignLeft)
+
 
         painter.setBrush(Qt.GlobalColor.transparent)
         painter.setPen(Qt.GlobalColor.black)
@@ -173,7 +175,7 @@ class QListProduits(QListWidget):
         
         for i in range(self.count()):
             item: QListWidgetItem = self.item(i)
-            if item.isSelected():
+            if self.visualItemRect(self.item(i)).contains(event.pos(), False):
                 self.addProduit(item)
     
     def mouseDoubleClickEvent(self, event):
@@ -181,7 +183,7 @@ class QListProduits(QListWidget):
         
         for i in range(self.count()):
             item: QListWidgetItem = self.item(i)
-            if item.isSelected():
+            if self.visualItemRect(self.item(i)).contains(event.pos(), False):
                 self.addProduit(item)
 
     def addProduit(self, item):
