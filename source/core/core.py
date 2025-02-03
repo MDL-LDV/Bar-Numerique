@@ -1,8 +1,14 @@
 from Helper import DataCore
 from datetime import datetime as dt
 from decimal import Decimal
+from win32con import GENERIC_WRITE, FILE_SHARE_WRITE
+import win32print
+import win32ui
 import json as js
 import csv
+import os
+
+
 
 class Core(DataCore):
     def __init__(self):
@@ -36,7 +42,7 @@ class Core(DataCore):
         else:
             raise "Unknown method of payment"
 
-    def JsonToCSV (self, name: str, datedebut: dt = dt.today(), datefin: dt = dt.today()) -> bool:       
+    def JsonToCSV (self, filename: str, datedebut: dt = dt.today(), datefin: dt = dt.today()) -> bool:       
         """
         Entry:
             name: str
@@ -112,7 +118,7 @@ class Core(DataCore):
         repr_debut = datedebut.day + r"/" + datedebut.month + r"/" + datedebut.year
         repr_fin = datefin.day + r"/" + datefin.month + r"/" + datefin.year
 
-        with open(name, "w+") as file:
+        with open(filename, "w+") as file:
             writer = csv.writer(file)
 
             
@@ -129,7 +135,31 @@ class Core(DataCore):
                     ["", "", "", "", jsondatedata[0]]
                 )
             
-        
+    def ImpressFile(self, filename:str) -> bool|Exception:
+        directory = os.getcwd()
+        file_path = os.path.join(directory, filename)
+        if os.path.isfile(file_path):
+            printer_name = win32print.GetDefaultPrinter()
+            hPrinter = win32print.OpenPrinter(printer_name)
+            try:
+            # Start a print job
+                hJob = win32print.StartDocPrinter(hPrinter, 1, ("Print Job", None, "RAW"))
+                try:
+                    # Start a print page
+                    win32print.StartPagePrinter(hPrinter)
+                    try:
+                        # Write the file to the printer
+                        with open(file_path, 'rb') as f:
+                            win32print.WritePrinter(hPrinter, f.read())
+                    finally:
+                        win32print.EndPagePrinter(hPrinter)
+                finally:
+                    win32print.EndDocPrinter(hPrinter)
+            finally:
+                win32print.ClosePrinter(hPrinter)
+        return True
+
+
             
     
     

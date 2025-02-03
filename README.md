@@ -20,7 +20,7 @@ Application de gestion du bar de la MDL
 
 ## Idées futures
 
-* Utiliser un menu burger -> menu peu utilisé
+* Utiliser un menu burger -> menu peu utilisé   
 
 ## Consignes
 
