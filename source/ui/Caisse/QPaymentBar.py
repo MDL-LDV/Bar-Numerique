@@ -174,12 +174,11 @@ class Payment(QWidget):
         self.div_bot.addWidget(self.carte_button, 0, 1, Qt.AlignmentFlag.AlignCenter)
     
     def encaisser(self: Payment, methode: MethodesPayment) -> None:
-        print("payment en", methode)
         prix = Decimal()
         for produit in self.panier.liste_produits:
             prix += self.panier.liste_produits[produit].nombre * produit.prix
 
-        enregistrer_commande(methode, prix, [ProduitData(nom="Café", prix=Decimal("0.4"), color='ffffff')])
+        enregistrer_commande(methode, prix, [ProduitData(nom="Café", prix=Decimal("0.4"), color='ffffff', id_produit=1)])
     
     def sizeHint(self: Payment):
         # return super().sizeHint()

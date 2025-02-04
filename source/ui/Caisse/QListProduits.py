@@ -9,6 +9,7 @@ from PySide6.QtCore import (QFileInfo, QDir, QJsonDocument, Signal,
 from decimal import Decimal
 
 from core.Produit import ProduitData
+from core.core import get_produit
 
 from os.path import exists as os_exists
 import sys
@@ -99,9 +100,7 @@ class QListProduits(QListWidget):
         super().__init__(parent)
         self.chemin_fichier_produits = sys.path[0] + "\\produits.json"
         self.fichier_produits: QJsonDocument
-        self.produits: dict = {}
-
-        self.get_produits()
+        self.list_produit: list[ProduitData] = get_produit()
         self.setStyleSheet(
             """QListWidget {
                 font: bold 20px; 
@@ -135,14 +134,6 @@ class QListProduits(QListWidget):
         self.setItemDelegate(CustomDelegate(self))
 
         self.fill()
-
-    def get_produits(self: QListProduits) -> None:
-        with open(self.chemin_fichier_produits, mode="rb") as file:
-            data = file.read()
-            file.close()
-        
-        self.fichier_produits = QJsonDocument.fromJson(data)
-        self.produits = self.fichier_produits.object()
     
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
@@ -167,20 +158,14 @@ class QListProduits(QListWidget):
         #! TODO: dataclass pour les produits et donc retirer qt de la gestion des fichiers
 
         self.clear()
-        for key, value in self.produits.items():
-            # item = QListWidgetItem(self)
-            # w = Vignette(self)
-            # w.setTitre(key)
-            # w.setColor(value["color"])
-            # item.setFlags(Qt.ItemFlag.ItemIsEnabled)
-            # item.setSizeHint(w.sizeHint())
-            # self.setItemWidget(item, w)
+        for produit in self.list_produit:
+            nom = produit.nom
+            color = produit.color
 
             item = QListWidgetItem(self)
-            item.setData(Qt.ItemDataRole.DisplayRole, key)
-            p = ProduitData(nom=key, prix=Decimal(str(value["price"])), color=value["color"])
-            item.setData(-1, p)
-            colour = QColor(value["color"])
+            item.setData(Qt.ItemDataRole.DisplayRole, nom)
+            item.setData(-1, produit)
+            colour = QColor(color)
             # print(colour)
             item.setData(Qt.ItemDataRole.DecorationRole, colour)
             item.setData(Qt.ItemDataRole.TextAlignmentRole, Qt.AlignmentFlag.AlignCenter)
