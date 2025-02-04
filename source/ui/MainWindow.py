@@ -1,11 +1,9 @@
-from PySide6.QtWidgets import (QMainWindow, QWidget, QSplitter, QMenu, 
-    QSizePolicy)
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QAction, QPixmap
+from PySide6.QtWidgets import (QMainWindow, QWidget, QSplitter)
 
 from .QNavigationBar import QNavigationBar
 from .QBody import QBody
 from .Caisse import CaissePage
+from .QCustomMenu import QCustomMenu
 
 from core.QtAddOns import QListWidgetItemId
 
@@ -43,39 +41,13 @@ class MainWindow(QMainWindow):
         windll.shell32.SetCurrentProcessExplicitAppUserModelID(
             f"{self.windowTitle()}_{version}"
         )
-
-        self.menu_bar = self.menuBar()
-        self.menu_bar.setStyleSheet(
-            """
-            QMenu::item:selected {
-                color: black; background-color: #D5D5D5; border: none; 
-            } 
-            QMenuBar::item:selected { 
-                background-color: #D5D5D5; 
-            } 
-            QMenuBar::item:selected#burger { 
-                background-color: transparent; 
-            }
-            """
-        )
-        burger = QPixmap("assets/burger.svg")
-        self.menu_burger = QAction(self.menu_bar)
-        self.menu_burger.setObjectName("burger")
-        self.menu_burger.setIcon(burger)
-        self.menu_bar.addAction(self.menu_burger)
-        self.fichier = QMenu(self.menu_bar)
-        self.fichier.setTitle("Fichier")
-        self.quitter = QAction(self.fichier)
-        self.quitter.setText("Quitter")
-        self.quitter.setShortcut("Ctrl+Q")
-        self.quitter.triggered.connect(self.close)
-        self.fichier.addAction(self.quitter)
-        self.menu_bar.addMenu(self.fichier)
-        self.setMenuBar(self.menu_bar)
+        
+        self.menu = QCustomMenu(self)
+        self.setMenuBar(self.menu)
         
         self.navbar = QNavigationBar(self)
         self.navbar.hide()
-        self.menu_burger.triggered.connect(self.navbar.activer)
+        # self.menu_burger.clicked.connect(self.navbar.actionner)
 
         item = QListWidgetItemId()
         item.identifiant = "Caisse"

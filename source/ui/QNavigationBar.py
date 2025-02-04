@@ -91,7 +91,7 @@ class QNavigationBar(QWidget):
         self.onglets.resize(event.size())
         return super().resizeEvent(event)
     
-    def activer(self: QNavigationBar) -> None:
+    def actionner(self: QNavigationBar) -> None:
         if self.isHidden():
             self.show()
         else:
