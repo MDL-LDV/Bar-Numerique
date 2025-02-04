@@ -46,7 +46,8 @@ class MainWindow(QMainWindow):
 
         self.menu_bar = self.menuBar()
         self.menu_bar.setStyleSheet(
-            """QMenu::item:selected {
+            """
+            QMenu::item:selected {
                 color: black; background-color: #D5D5D5; border: none; 
             } 
             QMenuBar::item:selected { 
@@ -104,7 +105,7 @@ class MainWindow(QMainWindow):
         self.splitter.insertWidget(0, self.navbar)
         self.splitter.insertWidget(1, self.body)
         
-        self.splitter.setSizes([1, 5])
+        self.splitter.setSizes([1, 6])
 
         self.setCentralWidget(self.splitter)
 
