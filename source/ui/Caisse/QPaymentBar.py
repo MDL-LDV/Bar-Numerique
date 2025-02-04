@@ -4,9 +4,8 @@ from PySide6.QtWidgets import (QWidget, QFrame, QVBoxLayout, QHBoxLayout, QLabel
     QGridLayout, QPushButton)
 from PySide6.QtCore import (Signal, QSize, Qt)
 from core.Produit import ProduitData
-from core.core import enregistrer_commande, MethodesPayment, Commande
+from core.core import enregistrer_commande, MethodesPayment
 from decimal import Decimal
-from typing import Optional
 
 
 class EntreeProduit(QFrame):
@@ -122,6 +121,10 @@ class Panier(QWidget):
         self.liste_produits[produit].hide()
         self.liste_produits[produit].deleteLater()
         self.liste_produits.__delitem__(produit)
+    
+    def clear(self: Panier) -> None:
+        for produit in self.liste_produits.copy():
+            self.removeProduit(produit)
 
 
 class Payment(QWidget):
@@ -175,10 +178,13 @@ class Payment(QWidget):
     
     def encaisser(self: Payment, methode: MethodesPayment) -> None:
         prix = Decimal()
+        produit_nombre: dict[ProduitData: int] = {}
         for produit in self.panier.liste_produits:
             prix += self.panier.liste_produits[produit].nombre * produit.prix
-
-        enregistrer_commande(methode, prix, [ProduitData(nom="Café", prix=Decimal("0.4"), color='ffffff', id_produit=1)])
+            produit_nombre[produit] = self.panier.liste_produits[produit].nombre
+        
+        enregistrer_commande(methode, prix, produit_nombre)
+        self.panier.clear()
     
     def sizeHint(self: Payment):
         # return super().sizeHint()

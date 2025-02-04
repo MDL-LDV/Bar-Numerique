@@ -36,7 +36,7 @@ def get_produit() -> list[ProduitData]:
 
 def enregistrer_commande(methode: MethodesPayment, 
                         montant: Decimal, 
-                        produits: list[ProduitData]) -> None:
+                        produits: dict[ProduitData: int]) -> None:
     """
     Entrées:
         methode: PaymentMethod
@@ -46,29 +46,18 @@ def enregistrer_commande(methode: MethodesPayment,
         None (modification de fichier)
     Rôle:
         Enregistre la commande dans un
-    """
-    def parse_list(liste) -> dict[ProduitData: int]:
-        dictionnaire = {}
-        for element in liste:
-            if element in dictionnaire:
-                dictionnaire[element] += 1
-            else:
-                dictionnaire[element] = 1
-                
+    """ 
     connection = sqlite3.connect(sys.path[0] + "\\commandes.sqlite3")
     date = dt.today().strftime("%d/%m/%Y")
     heure = dt.now().strftime("%H:%M")
     try:
         curseur = connection.cursor()
         curseur.execute(f"""INSERT INTO Commande (date, heure, total) VALUES ("{date}", "{heure}", "{montant}")""")
-        id_commande = curseur.execute("SELECT MAX(Commande.id_commande) FROM Commande").fetchall()
-        print(id_commande)
-        produits: dict[ProduitData: int] = parse_list(produits)
+        id_commande = curseur.execute("SELECT MAX(Commande.id_commande) FROM Commande").fetchall()[0][0]
         
-        for produit, quantite in produit.items():
+        for produit, quantite in produits.items():
             curseur.execute(f"""INSERT INTO CommandeDetails (id_commande, id_produit, quantite) VALUES ("{id_commande}", "{produit.id_produit}", "{quantite}")""")
 
-        # curseur.execute(f"""INSERT INTO CommandeDetails (date, heure, total) VALUES ("{date}", "{heure}", "{montant}")""")
         connection.commit()
     except Exception as e:
         print(e)
