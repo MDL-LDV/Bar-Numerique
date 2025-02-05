@@ -2,8 +2,13 @@ from __future__ import annotations
 
 from PySide6.QtWidgets import (QPushButton, QDialog, QWidget, QFormLayout, QDateEdit, 
     QGridLayout, QGroupBox, QCalendarWidget, QFileDialog)
-from PySide6.QtCore import QDateTime, QDate, Qt, QDir
+from PySide6.QtCore import QDateTime, QDate, Qt
 from PySide6.QtGui import QPalette, QTextCharFormat
+
+import csv
+from os.path import exists
+
+from core.core import generate_csv
 
 
 class QCalendarRangeWidget(QCalendarWidget):
@@ -76,7 +81,7 @@ class QExport(QDialog):
 
         self.exporter_button = QPushButton(self)
         self.exporter_button.setText("Exporter")
-        self.exporter_button.clicked.connect(self.exporter_as_csv)
+        self.exporter_button.clicked.connect(self.exporter)
         self.exporter_button.adjustSize()
         self.exporter_button.move(
             self.width() - self.exporter_button.width() - 10, 
@@ -86,16 +91,44 @@ class QExport(QDialog):
         self.date_fin.dateChanged.connect(self.update_range)
         self.update_range()
     
-    def exporter_as_csv(self: QExport):
-        # Déclaration d'un nouveau QFileDialog
+    def exporter(self: QExport):
         enregistrer_fichier = QFileDialog(self, caption="Enregistrer sous")
         enregistrer_fichier.setFileMode(QFileDialog.FileMode.Directory)
         enregistrer_fichier.setOption(QFileDialog.Option.ShowDirsOnly, True)
 
         if enregistrer_fichier.exec():
             folder = enregistrer_fichier.selectedFiles()[0]
-            nom = f"livre_comptes_{self.date_depart.date().toString("dd-MM-yyyy")}_{self.date_fin.date().toString("dd-MM-yyyy")}.csv"
-            with open(nom, )
+            depart = self.date_depart.date().toString("dd-MM-yyyy")
+            fin = self.date_fin.date().toString("dd-MM-yyyy")
+            fichier = f"/livre_comptes_{depart}_{fin}"
+            
+            self.exporter_as_csv(folder + fichier)
+        
+        self.close()
+    
+    def exporter_as_csv(self: QExport, filename):
+        filename += ".csv"
+
+        depart = self.date_depart.date()
+        fin = self.date_fin.date()
+        diff = depart.daysTo(fin) + 1
+        dates: list[str] = []
+        for i in range(diff):
+            dates.append(depart.addDays(i).toString("dd/MM/yyyy"))
+
+        donnees = generate_csv(dates)
+
+        if exists(filename):
+            mode = "w"
+        else:
+            mode = "a"
+
+        with open(filename, mode, newline='', encoding="utf8") as file:
+            try:
+                writer = csv.writer(file)
+                writer.writerows(donnees)
+            finally:
+                file.close()
     
     def get_monday(self: QExport):
         if self.today.dayOfWeek() > 1:
