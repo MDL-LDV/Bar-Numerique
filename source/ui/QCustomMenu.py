@@ -18,6 +18,8 @@ class QCustomMenu(QMenuBar):
                 icon-size: 35px;
             }
             QMenuBar::item {
+                min-height: 50px;
+                icon-size: 35px;
             }
             QMenuBar::item:selected { 
                 background-color: #D5D5D5; 
@@ -68,5 +70,4 @@ class QCustomMenu(QMenuBar):
         return super().resizeEvent(event)
 
     def sizeHint(self):
-        # return super().sizeHint()
-        return QSize(self.parent().width(), 50)
+        return super().sizeHint()
