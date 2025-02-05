@@ -21,7 +21,7 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
     # application.setOrganizationDomain("")
     # Définition de la version de l'application (normalisé)
     # https://semver.org/spec/v2.0.0.html
-    application.setApplicationVersion("v1.0.0-alpha")
+    application.setApplicationVersion("v1.0.0-poc")
 
     # Instanciation de MainWindow, la fenêtre principale
     window = MainWindow(None)
