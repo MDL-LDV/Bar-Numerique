@@ -75,6 +75,7 @@ class QExport(QDialog):
         monday = self.get_monday()
         self.date_depart.setDate(monday)
         self.form.addRow("Date de départ", self.date_depart)
+        #! TODO: make sure date_fin is always greater or equal to date_depart
         self.date_fin = QDateEdit(self)
         self.date_fin.setDate(self.today)
         self.form.addRow("Date de fin", self.date_fin)
