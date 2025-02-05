@@ -15,11 +15,8 @@ class QCustomMenu(QMenuBar):
             """
             QMenuBar {
                 min-height: 50px;
-                icon-size: 35px;
             }
             QMenuBar::item {
-                min-height: 50px;
-                icon-size: 35px;
             }
             QMenuBar::item:selected { 
                 background-color: #D5D5D5; 
