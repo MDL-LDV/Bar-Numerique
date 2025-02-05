@@ -1,12 +1,14 @@
 from __future__ import annotations
 
-from PySide6.QtWidgets import (QMenuBar, QWidget, QHBoxLayout, QPushButton, 
-    QMenu)
+from PySide6.QtWidgets import (QMenuBar, QWidget, QMenu)
 from PySide6.QtGui import QResizeEvent, QPixmap, QAction
-from PySide6.QtCore import QSize, Qt
+from PySide6.QtCore import QSize, Qt, Signal
+
+from .QExport import QExport
 
 
 class QCustomMenu(QMenuBar):
+    menuClicked = Signal()
     def __init__(self: QCustomMenu, parent: QWidget):
         super().__init__(parent)
         self.setStyleSheet(
@@ -28,40 +30,38 @@ class QCustomMenu(QMenuBar):
             }
             QMenu::item:selected {
                 color: black; 
-                /*background-color: #D5D5D5; */
+                background-color: #D5D5D5;
             } 
             """
         )
         
         self.menu_burger = QAction(self)
         self.menu_burger.setIcon(QPixmap("assets/burger.svg"))
-        # self.menu_burger.setIconSize(QSize(35, 35))
-        # self.menu_burger.setGeometry(3, 3, 35, 35)
-        # self.menu_burger.setStyleSheet(
-        #     """
-        #     QPushButton { 
-        #         border: none; 
-        #         border-radius: 5px; 
-        #         background-color: transparent; 
-        #     } 
-        #     QPushButton::pressed { 
-        #         /*padding-top: 3px; 
-        #         padding-left: 3px;*/ 
-        #         background-color: #CDD0DA; 
-        #     }
-        #     """)
+        self.menu_burger.triggered.connect(lambda: self.menuClicked.emit())
         self.addAction(self.menu_burger)
 
+        # Fichier
+        
         self.fichier = QMenu(self)
         self.fichier.setTitle("Fichier")
-        self.quitter = QAction(self.fichier)
-        self.quitter.setText("Quitter")
-        self.quitter.setShortcut("Ctrl+Q")
-        self.quitter.triggered.connect(self.close)
-        self.fichier.addAction(self.quitter)
-        self.fichier.move(100, 0)
+
+        self.exporter_act = QAction(self.fichier)
+        self.exporter_act.setText("Exporter...")
+        self.exporter_act.setShortcut("Ctrl+E")
+        self.exporter_act.triggered.connect(self.exporter)
+        self.fichier.addAction(self.exporter_act)
+        
+        self.quitter_act = QAction(self.fichier)
+        self.quitter_act.setText("Quitter")
+        self.quitter_act.setShortcut("Ctrl+Q")
+        self.quitter_act.triggered.connect(self.close)
+        self.fichier.addAction(self.quitter_act)
 
         self.addMenu(self.fichier)
+    
+    def exporter(self: QCustomMenu):
+        menu = QExport(self)
+        menu.exec()
     
     def resizeEvent(self, event: QResizeEvent):
         self.resize(event.size().width(), self.height())

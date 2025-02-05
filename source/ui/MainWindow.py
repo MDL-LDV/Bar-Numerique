@@ -47,7 +47,7 @@ class MainWindow(QMainWindow):
         
         self.navbar = QNavigationBar(self)
         self.navbar.hide()
-        # self.menu_burger.clicked.connect(self.navbar.actionner)
+        self.menu.menuClicked.connect(self.navbar.actionner)
 
         item = QListWidgetItemId()
         item.identifiant = "Caisse"
