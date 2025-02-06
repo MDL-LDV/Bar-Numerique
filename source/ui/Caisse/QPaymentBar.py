@@ -186,6 +186,7 @@ class Payment(QWidget):
             
             enregistrer_commande(methode, prix, produit_nombre)
             self.panier.clear()
+            self.clear_prix()
     
     def sizeHint(self: Payment):
         # return super().sizeHint()
@@ -196,6 +197,10 @@ class Payment(QWidget):
         return QSize(0, 0)
     
     def update_prix(self: Payment):
+        self.prix_label.setText(f"{self.prix_total} €")
+    
+    def clear_prix(self: Payment):
+        self.prix_total -= self.prix_total
         self.prix_label.setText(f"{self.prix_total} €")
 
     def addProduit(self: Payment, produit: ProduitData):
