@@ -131,7 +131,7 @@ class Payment(QWidget):
     def __init__(self: Payment, parent: QWidget, panier: Panier):
         super().__init__(parent)
         self.liste_produits: list[ProduitData] = []
-        self.prix_total: Decimal = Decimal()
+        self.prix_total: Decimal = Decimal("0.00")
         self.panier = panier
         self.setStyleSheet(
             """QLabel { 
