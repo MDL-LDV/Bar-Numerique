@@ -1,6 +1,5 @@
 **/__pycache__/
 /.idea
 /.vscode
-/source/core/Payment.json
 **.csv
-**.sqlite3
+/source/commandes.sqlite3
