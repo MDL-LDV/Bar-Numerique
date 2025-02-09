@@ -3,3 +3,4 @@
 /.vscode
 /source/core/Payment.json
 **.csv
+**.sqlite3
