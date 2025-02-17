@@ -20,4 +20,4 @@ class CaissePage(QSplitter):
         self.produits.produitClicked.connect(self.payment.addProduit)
         self.addWidget(self.payment)
 
-        self.setSizes([4, 1])
+        self.setSizes([7, 2])
