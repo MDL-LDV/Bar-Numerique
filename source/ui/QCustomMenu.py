@@ -15,17 +15,21 @@ class QCustomMenu(QMenuBar):
             """
             QMenuBar {
                 min-height: 50px;
+                font-size: 15px;
             }
             QMenuBar::item {
             }
             QMenuBar::item:selected { 
                 background-color: #D5D5D5; 
             }
-            
             QMenu::item {
-                padding: 5px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-right: 10px;
+                padding-left: 5px;
                 border: none; 
                 icon-size: 35px;
+                font-size: 15px;
             }
             QMenu::item:selected {
                 color: black; 
@@ -53,7 +57,7 @@ class QCustomMenu(QMenuBar):
         self.quitter_act = QAction(self.fichier)
         self.quitter_act.setText("Quitter")
         self.quitter_act.setShortcut("Ctrl+Q")
-        self.quitter_act.triggered.connect(self.close)
+        self.quitter_act.triggered.connect(self.parent().close)
         self.fichier.addAction(self.quitter_act)
 
         self.addMenu(self.fichier)

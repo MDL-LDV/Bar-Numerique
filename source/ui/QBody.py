@@ -22,7 +22,7 @@ class QBody(QStackedWidget):
     def dispatcher(self: QBody, page: str) -> None:
         if page in self.map_page_index:
             self.setCurrentIndex(self.map_page_index[page])
-            print(self.currentIndex(), self.currentWidget())
+            # print(self.currentIndex(), self.currentWidget())
         else:
             print(f"La page ``{page}`` n'existe pas")
     

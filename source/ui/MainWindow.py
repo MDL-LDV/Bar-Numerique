@@ -1,9 +1,10 @@
 from PySide6.QtWidgets import (QMainWindow, QWidget, QSplitter)
 
 from .QNavigationBar import QNavigationBar
+from .QCustomMenu import QCustomMenu
 from .QBody import QBody
 from .Caisse import CaissePage
-from .QCustomMenu import QCustomMenu
+from .Historique import HistoriquePage
 
 from core.QtAddOns import QListWidgetItemId
 
@@ -54,6 +55,11 @@ class MainWindow(QMainWindow):
         item.setData(0, "Caisse")
         self.navbar.addItem(item)
 
+        item = QListWidgetItemId()
+        item.identifiant = "Historique"
+        item.setData(0, "Historique")
+        self.navbar.addItem(item)
+
         # self.caisse_widget = QWidget()
         # layout = QHBoxLayout(self.caisse_widget)
         # label = QLabel()
@@ -72,6 +78,9 @@ class MainWindow(QMainWindow):
 
         self.caisse = CaissePage(self.body)
         self.body.addWidget(self.caisse)
+
+        self.historique = HistoriquePage(self.body)
+        self.body.addWidget(self.historique)
         
         self.splitter = QSplitter(self)
         self.splitter.insertWidget(0, self.navbar)

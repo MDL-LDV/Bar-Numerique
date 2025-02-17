@@ -28,6 +28,8 @@ class QNavigationBar(QWidget):
             """
             QListWidget { 
                 border-right: 1px solid #000000;
+                font-size: 22px;
+                font: bold;
             }
             QListWidget::item {
                 border: 1px solid black;
