@@ -1,11 +1,38 @@
 from __future__ import annotations
 
-from PySide6.QtWidgets import (QWidget, QFrame, QVBoxLayout, QHBoxLayout, QLabel, QSplitter, 
-    QGridLayout, QPushButton)
+from PySide6.QtWidgets import (QWidget, QFrame, QVBoxLayout, QLayout, QLabel, 
+    QGridLayout, QPushButton, QSpacerItem, QSizePolicy, QScrollArea)
 from PySide6.QtCore import (Signal, QSize, Qt)
 from core.Produit import ProduitData
 from core.core import enregistrer_commande, MethodesPayment
 from decimal import Decimal
+from PySide6.QtGui import QFontMetrics
+
+from core.QtAddOns import QRatioSlitter
+
+
+class EllipsisLabel(QLabel):
+    """
+    https://forum.qt.io/post/812856
+    """
+    def __init__(self, parent=None, text=""):
+        super().__init__(parent)
+        self._text = text
+        self.setText(text)
+
+    def setText(self, text):
+        self._text = text
+        self.updateText()
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self.updateText()
+        # print("Ellipsis", self.width())
+
+    def updateText(self):
+        metrics = QFontMetrics(self.font())
+        elided = metrics.elidedText(self._text, Qt.ElideRight, self.width() - 1)
+        super().setText(elided)
 
 
 class EntreeProduit(QFrame):
@@ -33,8 +60,9 @@ class EntreeProduit(QFrame):
                 border-radius: 3px;
             }""")
         self.div = QGridLayout(self)
+        # self.div.setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
 
-        self.nom_label = QLabel(self)
+        self.nom_label = EllipsisLabel(self)
         self.nom_label.setText(self.produit.nom)
         self.div.addWidget(self.nom_label, 0, 0, Qt.AlignmentFlag.AlignBaseline)
         self.div.setColumnStretch(0, 7)
@@ -63,7 +91,16 @@ class EntreeProduit(QFrame):
         self.div.addWidget(self.minus_button, 0, 3, Qt.AlignmentFlag.AlignCenter)
         self.div.setColumnStretch(3, 1)
 
+        self.setMinimumWidth(200)
+        self.setFixedHeight(45)
+
+        # print("Div", self.div.totalMinimumSize())
+
         self.setLayout(self.div)
+    
+    def resizeEvent(self, event):
+        # print("EProduit", event, "\n")
+        return super().resizeEvent(event)
     
     def setProduit(self: EntreeProduit, produit: ProduitData) -> None:
         self.produit = produit
@@ -81,17 +118,46 @@ class EntreeProduit(QFrame):
         
         self.nombre -= 1
         self.quantite_label.setText(str(self.nombre))
+    
+    def minimumSizeHint(self):
+        # return super().minimumSizeHint()
+        return self.minimumSize()
 
 
-class Panier(QWidget):
+class Panier(QScrollArea):
     produitAdded = Signal(ProduitData)
     produitRemoved = Signal(ProduitData)
     def __init__(self, parent: QWidget):
         super().__init__(parent)
-        # self.setStyleSheet("padding: 0px; border: 1px solid black;")
+        self.setFrameShape(QFrame.Shape.NoFrame)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.setWidgetResizable(True)
+        
+        self.widget_central = QWidget(self)
+        self.setWidget(self.widget_central)
+
         self.liste = QVBoxLayout(self)
+        self.widget_central.setLayout(self.liste)
+
         self.liste.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.liste_produits: dict[ProduitData: EntreeProduit] = {}
+
+        self.setMinimumWidth(
+            # EntreeProduit.minimumWidth()
+            200
+            + self.liste.contentsMargins().left() 
+            + self.liste.contentsMargins().right()
+            + self.verticalScrollBar().width()
+            + 1
+        )
+
+        self.setMinimumHeight(
+            self.liste.contentsMargins().top()
+            # EntreeProduit.minimumHeight()
+            + 45
+            + self.liste.spacing()
+            + self.liste.contentsMargins().bottom()
+        )
 
         self.iterator = 0
     
@@ -149,32 +215,38 @@ class Payment(QWidget):
             """
         )
 
-        self.div_mid = QVBoxLayout(self)
-        self.div_mid.setSpacing(0)
-        self.div_top = QGridLayout()
-        self.div_mid.addItem(self.div_top)
-        self.div_bot = QGridLayout()
-        self.div_mid.addItem(self.div_bot)
+        self.div = QGridLayout(self)
+        self.div.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
+        self.div.setSpacing(0)
 
         self.total_label = QLabel(self)
         self.total_label.setText("Total")
-        self.div_top.addWidget(self.total_label, 0, 0, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
+        self.total_label.adjustSize()
+        self.div.addWidget(self.total_label, 0, 0, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
 
         self.prix_label = QLabel(self)
         self.prix_label.setText(f"{self.prix_total} €")
-        self.div_top.addWidget(self.prix_label, 0, 1, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight)
+        self.prix_label.adjustSize()
+        self.div.addWidget(self.prix_label, 0, 2, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight)
 
         self.cash_button = QPushButton(self)
         self.cash_button.setFixedSize(120, 70)
         self.cash_button.pressed.connect(lambda: self.encaisser(MethodesPayment.Cash))
         self.cash_button.setText("Espèces")
-        self.div_bot.addWidget(self.cash_button, 0, 0, Qt.AlignmentFlag.AlignCenter)
+        self.cash_button.adjustSize()
+        self.div.addWidget(self.cash_button, 1, 0, Qt.AlignmentFlag.AlignCenter)
+
+        spacer = QSpacerItem(5, 0, QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Ignored)
+        self.div.addItem(spacer, 1, 1)
 
         self.carte_button = QPushButton(self)
         self.carte_button.setFixedSize(120, 70)
         self.carte_button.pressed.connect(lambda: self.encaisser(MethodesPayment.CB))
         self.carte_button.setText("Carte")
-        self.div_bot.addWidget(self.carte_button, 0, 1, Qt.AlignmentFlag.AlignCenter)
+        self.carte_button.adjustSize()
+        self.div.addWidget(self.carte_button, 1, 2, Qt.AlignmentFlag.AlignCenter)
+
+        self.setMinimumSize(self.div.totalMinimumSize())
     
     def encaisser(self: Payment, methode: MethodesPayment) -> None:
         if self.panier.liste_produits:
@@ -214,11 +286,12 @@ class Payment(QWidget):
         self.update_prix()
 
 
-class QPaymentBar(QSplitter):
+class QPaymentBar(QRatioSlitter):
     def __init__(self, parent: QWidget):
         super().__init__(parent)
         self.setOrientation(Qt.Orientation.Vertical)
         self.setStyleSheet("QSplitter:handle { border-bottom: 1px solid black }")
+        self.setAllCollapsible(False)
 
         self.panier = Panier(self)
         self.addWidget(self.panier)
@@ -229,14 +302,30 @@ class QPaymentBar(QSplitter):
         self.addWidget(self.payment)
 
         self.setSizes([7, 2])
+        
+        self.setMinimumWidth(
+            max(self.panier.minimumWidth(), self.payment.minimumWidth())
+        )
+
+        self.setMinimumHeight(
+            self.panier.minimumHeight()
+            + self.handleWidth()
+            + self.payment.minimumHeight()
+        )
+    
+    def resizeEvent(self, event):
+        # print("Splitter", event)
+        
+        # handleWidth = self.handleWidth()
+        # self.setHandleWidth(0)
+        # super().resizeEvent(event)
+        # self.setHandleWidth(handleWidth)
+        
+        super().resizeEvent(event)
     
     def addProduit(self, produit: ProduitData):
         self.panier.addProduit(produit)
     
-    def sizeHint(self):
-        # return super().sizeHint()
-        return QSize(0, 0)
-
     def minimumSizeHint(self):
         # return super().minimumSizeHint()
-        return QSize(0, 0)        
+        return self.minimumSize()

@@ -15,6 +15,12 @@ class QBody(QStackedWidget):
         if w.objectName():
             index = super().addWidget(w)
             self.map_page_index[w.objectName()] = index
+
+            if w.minimumWidth() > self.minimumWidth():
+                self.setMinimumWidth(w.minimumWidth())
+            if w.minimumHeight() > self.minimumHeight():
+                self.setMinimumHeight(w.minimumHeight())
+            
             return index
         else:
             print("Le widget doit avoir un nom")

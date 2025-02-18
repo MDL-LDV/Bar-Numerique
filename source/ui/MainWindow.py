@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import (QMainWindow, QWidget, QSplitter)
+from PySide6.QtWidgets import QMainWindow, QWidget
 
 from .QNavigationBar import QNavigationBar
 from .QCustomMenu import QCustomMenu
@@ -6,7 +6,7 @@ from .QBody import QBody
 from .Caisse import CaissePage
 from .Historique import HistoriquePage
 
-from core.QtAddOns import QListWidgetItemId
+from core.QtAddOns import QListWidgetItemId, QRatioSlitter
 
 from typing import Optional
 
@@ -82,13 +82,18 @@ class MainWindow(QMainWindow):
         self.historique = HistoriquePage(self.body)
         self.body.addWidget(self.historique)
         
-        self.splitter = QSplitter(self)
+        self.splitter = QRatioSlitter(self)
         self.splitter.insertWidget(0, self.navbar)
         self.splitter.insertWidget(1, self.body)
         
         self.splitter.setSizes([1, 6])
 
         self.setCentralWidget(self.splitter)
+        self.setMinimumWidth(self.body.minimumWidth())
+        self.setMinimumHeight(
+            self.menuBar().height()
+            + self.body.minimumHeight()
+        )
 
         self.showMaximized()
     

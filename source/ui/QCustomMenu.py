@@ -61,6 +61,7 @@ class QCustomMenu(QMenuBar):
         self.fichier.addAction(self.quitter_act)
 
         self.addMenu(self.fichier)
+        self.adjustSize()
     
     def exporter(self: QCustomMenu):
         menu = QExport(self)

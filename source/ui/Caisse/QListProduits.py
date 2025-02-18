@@ -2,25 +2,62 @@ from __future__ import annotations
 
 from PySide6.QtWidgets import (QListWidget, QWidget, QListView, 
     QListWidgetItem, QLabel, QStyledItemDelegate, QStyleOptionViewItem, QStyle, 
-    QApplication, QDialog)
-from PySide6.QtGui import QMouseEvent, QColor, QPainter, QFont
-from PySide6.QtCore import (QFileInfo, QDir, QJsonDocument, Signal, 
-    QAbstractItemModel, QSize, Qt, QModelIndex, QPersistentModelIndex, QRect)
-from decimal import Decimal
+    QApplication)
+from PySide6.QtGui import QMouseEvent, QColor, QPainter, QFont, QResizeEvent
+from PySide6.QtCore import (Signal, QSize, Qt, QModelIndex, 
+    QPersistentModelIndex, QRect)
 
 from core.Produit import ProduitData
 from core.core import get_produit
 
-from os.path import exists as os_exists
-import sys
 
-p = []
+class Vignette(QWidget):
+    def __init__(self, parent: QWidget):
+        super().__init__(parent)
+        self.setFixedSize(200, 250)
+        self.setAutoFillBackground(True)
+        self.setStyleSheet("background-color: red;")
 
-def print_unique(key, *args, **kwargs):
-    global p
-    if key not in p:
-        print(*args, **kwargs)
-        p.append(key)
+        self.image_label = QLabel(self)
+        self.image_label.setGeometry(10, 10, 176, 160)
+        self.image_label_style = "border-radius: 10px;"
+        self.image_label.setStyleSheet(self.image_label_style)
+        
+        self.titre_label = QLabel(self)
+        self.titre_label.setStyleSheet("font-size: 16px;")
+        self.titre_label.setGeometry(8, 175, 180, 20)
+    
+    def setTitre(self, titre: str) -> None:
+        self.titre_label.setText(titre)
+    
+    def setColor(self, color: str) -> None:
+        self.image_label.setStyleSheet(
+            f"{self.image_label_style} background-color: {color};")
+    
+    def mousePressEvent(self, event: QMouseEvent):
+        if event.button() is Qt.MouseButton.LeftButton:
+            # print(self.titre_label.text())
+            pass
+
+        return super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if event.button() is Qt.MouseButton.LeftButton:
+            pass
+        
+        return super().mouseReleaseEvent(event)
+    
+    def sizeHint(self):
+        # return super().sizeHint()
+        return self.size()
+
+# p = []
+
+# def print_unique(key, *args, **kwargs):
+#     global p
+#     if key not in p:
+#         print(*args, **kwargs)
+#         p.append(key)
 
 
 class CustomDelegate(QStyledItemDelegate):
@@ -69,28 +106,10 @@ class CustomDelegate(QStyledItemDelegate):
         """
 
         painter.restore()
-        # super().paint(painter, option, index)
-        """
-['__new__', '__init__', '__copy__', 'displayAlignment', 'decorationAlignment', 
-'textElideMode', 'decorationPosition', 'decorationSize', 'font', 'showDecorationSelected', 
-'features', 'locale', 'widget', 'index', 'checkState', 'icon', 'text', 'viewItemPosition', 
-'backgroundBrush', '__doc__', '__module__', 'StyleOptionType', 'StyleOptionVersion', 
-'Position', 'ViewItemFeature', 'ViewItemPosition', '__repr__', 'initFrom', 
-'version', 'type', 'state', 'direction', 'rect', 'fontMetrics', 'palette', 
-'styleObject', 'OptionType', '__getattribute__', '__setattr__', '__delattr__', 
-'__dict__', '__hash__', '__str__', '__lt__', '__le__', '__eq__', '__ne__', 
-'__gt__', '__ge__', '__reduce_ex__', '__reduce__', '__getstate__', 
-'__subclasshook__', '__init_subclass__', '__format__', '__sizeof__', '__dir__', 
-'__class__']
-        """
     
     def sizeHint(self, option, index):
         # return super().sizeHint(option, index)
         return QSize(200, 250)
-    
-    def setModelData(self, editor: QWidget, model: QAbstractItemModel, index: QModelIndex | QPersistentModelIndex):
-        print(editor, model)
-        return super().setModelData(editor, model, index)
 
 
 class QListProduits(QListWidget):
@@ -98,8 +117,6 @@ class QListProduits(QListWidget):
 
     def __init__(self, parent: QWidget):
         super().__init__(parent)
-        self.chemin_fichier_produits = sys.path[0] + "\\produits.json"
-        self.fichier_produits: QJsonDocument
         self.list_produit: list[ProduitData] = get_produit()
         self.setStyleSheet(
             """QListWidget {
@@ -127,14 +144,35 @@ class QListProduits(QListWidget):
         self.setWrapping(True)
         self.setResizeMode(QListView.ResizeMode.Adjust)
         self.setItemAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.setItemDelegate(CustomDelegate(self))
         
         self.setSelectionRectVisible(False)
         self.setSpacing(5)
-
-        self.setItemDelegate(CustomDelegate(self))
-
+        
         self.fill()
-    
+
+        self.verticalScrollBar().adjustSize()
+
+        self.setMinimumWidth(
+            self.contentsMargins().left()
+            + self.spacing()
+            # De toute façon, sizeHint ne prend pas de paramètre
+            + self.itemDelegate().sizeHint(None, None).width()
+            + self.spacing()
+            + self.contentsMargins().right()
+            + self.verticalScrollBar().width()
+            # verticalScrollBar's border I presume
+            + 1
+        )
+        self.setMinimumHeight(
+            self.contentsMargins().top()
+            + self.spacing()
+            # De toute façon, sizeHint ne prend pas de paramètre
+            + self.itemDelegate().sizeHint(None, None).height()
+            + self.spacing()
+            + self.contentsMargins().bottom()
+        )
+
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
         
@@ -173,45 +211,4 @@ class QListProduits(QListWidget):
     
     def minimumSizeHint(self):
         # return super().minimumSizeHint()
-        return QSize(0, 0)
-
-
-class Vignette(QWidget):
-    def __init__(self, parent: QWidget):
-        super().__init__(parent)
-        self.setFixedSize(200, 250)
-        self.setAutoFillBackground(True)
-        self.setStyleSheet("background-color: red;")
-
-        self.image_label = QLabel(self)
-        self.image_label.setGeometry(10, 10, 176, 160)
-        self.image_label_style = "border-radius: 10px;"
-        self.image_label.setStyleSheet(self.image_label_style)
-        
-        self.titre_label = QLabel(self)
-        self.titre_label.setStyleSheet("font-size: 16px;")
-        self.titre_label.setGeometry(8, 175, 180, 20)
-    
-    def setTitre(self, titre: str) -> None:
-        self.titre_label.setText(titre)
-    
-    def setColor(self, color: str) -> None:
-        self.image_label.setStyleSheet(
-            f"{self.image_label_style} background-color: {color};")
-    
-    def mousePressEvent(self, event: QMouseEvent):
-        if event.button() is Qt.MouseButton.LeftButton:
-            # print(self.titre_label.text())
-            pass
-
-        return super().mousePressEvent(event)
-
-    def mouseReleaseEvent(self, event):
-        if event.button() is Qt.MouseButton.LeftButton:
-            pass
-        
-        return super().mouseReleaseEvent(event)
-    
-    def sizeHint(self):
-        # return super().sizeHint()
-        return self.size()
+        return self.minimumSize()
