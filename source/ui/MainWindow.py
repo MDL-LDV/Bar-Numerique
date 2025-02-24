@@ -81,6 +81,7 @@ class MainWindow(QMainWindow):
 
         self.historique = HistoriquePage(self.body)
         self.body.addWidget(self.historique)
+        self.body.setCurrentIndex(1)
         
         self.splitter = QRatioSlitter(self)
         self.splitter.insertWidget(0, self.navbar)

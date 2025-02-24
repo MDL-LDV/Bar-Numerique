@@ -1,7 +1,7 @@
 from datetime import datetime as dt
 from decimal import Decimal
 from enum import StrEnum
-from .Produit import ProduitData
+from .Produit import ProduitData, CommandeData
 import sqlite3
 import sys
 
@@ -23,6 +23,7 @@ def get_produit() -> list[ProduitData]:
         produit_list.append(ProduitData.model_validate(data_dict))
 
     return produit_list
+
 
 def generate_csv(dates: list[str]):
     connection = sqlite3.connect(sys.path[0] + "\\commandes.sqlite3")
@@ -100,4 +101,34 @@ def enregistrer_commande(methode: MethodesPayment,
         print(e)
     finally:
         connection.close()
-    
+
+
+def get_commande() -> list[CommandeData]:
+    connection = sqlite3.connect(sys.path[0] + "\\commandes.sqlite3")
+    curseur = connection.cursor()
+    data = curseur.execute("SELECT * FROM Commande").fetchall()
+    connection.close()
+
+    commande_list = []
+    for row in data:
+        data_dict = {key: row[i] for i, key in enumerate(CommandeData.model_fields.keys())}
+        commande_list.append(CommandeData.model_validate(data_dict))
+
+    print(data)
+
+    return commande_list
+
+
+def delete_commande(id_commande: int) -> None:
+    connection = sqlite3.connect(sys.path[0] + "\\commandes.sqlite3")
+    curseur = connection.cursor()
+
+    try:
+        curseur.execute(f"DELETE FROM CommandeDetails WHERE id_commande={id_commande}")
+        curseur.execute(f"DELETE FROM Commande WHERE id_commande={id_commande}")
+
+        connection.commit()
+    except Exception as e:
+        print(e)
+    finally:
+        connection.close()

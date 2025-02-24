@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from PySide6.QtWidgets import QStackedWidget, QWidget
-from PySide6.QtCore import QSize
+from PySide6.QtCore import QSize, QEvent
 
 from typing import Optional
 
@@ -28,6 +28,7 @@ class QBody(QStackedWidget):
     def dispatcher(self: QBody, page: str) -> None:
         if page in self.map_page_index:
             self.setCurrentIndex(self.map_page_index[page])
+            self.currentWidget().event(QEvent(QEvent.Type.ApplicationActivated))
             # print(self.currentIndex(), self.currentWidget())
         else:
             print(f"La page ``{page}`` n'existe pas")

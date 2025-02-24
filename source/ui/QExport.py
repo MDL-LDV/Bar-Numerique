@@ -110,8 +110,12 @@ class QExport(QDialog):
     def exporter_as_csv(self: QExport, filename):
         filename += ".csv"
 
-        depart = self.date_depart.date()
-        fin = self.date_fin.date()
+        date1 = self.date_depart.date()
+        date2 = self.date_fin.date()
+
+        # On prend l'utilisateur pour un con et on corrige ses erreurs
+        depart, fin = date1, date2 if date1.getDate() <= date2.getDate() else date2, date1
+        
         diff = depart.daysTo(fin) + 1
         dates: list[str] = []
         for i in range(diff):
@@ -119,10 +123,7 @@ class QExport(QDialog):
 
         donnees = generate_csv(dates)
 
-        if exists(filename):
-            mode = "w"
-        else:
-            mode = "a"
+        mode = "w" if exists(filename) else "a"
 
         with open(filename, mode, newline='', encoding="utf8") as file:
             try:
