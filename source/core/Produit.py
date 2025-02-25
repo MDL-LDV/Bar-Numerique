@@ -18,6 +18,6 @@ class CommandeData(BaseModel):
     model_config = ConfigDict(extra='forbid', frozen=True)
     
     id_commande: int = Field(...)
-    date: str = Field(...)
-    heure: str = Field(...)
+    date: int = Field(...)
+    heure: int = Field(...)
     total: Decimal = Field(...)

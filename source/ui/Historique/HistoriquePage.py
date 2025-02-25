@@ -46,7 +46,7 @@ class Commande(QFrame):
         self.div.addWidget(self.total, 0, 2, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight)
 
         self.date_heure = QLabel(self)
-        self.date_heure.setText(f"Le {self.commande.date} à {self.commande.heure}")
+        self.date_heure.setText(f"Le {self.f_date(self.commande.date)} à {self.f_heure(self.commande.heure)}")
         self.div.addWidget(self.date_heure, 1, 0, 1, 2, alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignLeft)
 
         self.delete_button = QPushButton(self)
@@ -55,6 +55,19 @@ class Commande(QFrame):
         self.delete_button.setFixedSize(30, 30)
         self.delete_button.setStyleSheet("border: none;")
         self.div.addWidget(self.delete_button, 0, 4, 2, 1, alignment=Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignRight)
+    
+    @staticmethod
+    def f_date(date: int):
+        sdate = str(date)
+        year = sdate[:4]
+        month = sdate[4:6]
+        day = sdate[6:]
+        return f"{day}/{month}/{year}"
+
+    @staticmethod
+    def f_heure(heure: int):
+        sheure = str(heure)
+        return f"{sheure[:2]}:{sheure[2:]}"
     
     def delete_commande(self):
         confirme = QMessageBox(self)
@@ -85,12 +98,15 @@ class ListeCommandes(QFrame):
         self.div = QVBoxLayout(self)
         self.div.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         self.commande_liste: list = []
+        self.debut = None
+        self.fin = None
 
         self.widget_liste: list[QWidget] = []
         self.fill()
 
     def fill(self):
-        self.commande_liste = get_commande()
+        # Fuck l'utilisateur si c'est pas dans le bon ordre
+        self.commande_liste = get_commande(self.debut, self.fin)
         for commande in self.commande_liste:
             commande_widget = Commande(self, commande)
             commande_widget.deleted.connect(self.update)
@@ -105,9 +121,13 @@ class ListeCommandes(QFrame):
         self.widget_liste.clear()
         
     def update(self):
-        print("update")
         self.clear()
         self.fill()
+    
+    def update_dates(self, debut, fin):
+        self.debut = debut
+        self.fin = fin
+        self.update()
 
 
 class HistoriquePage(QScrollArea):
@@ -145,6 +165,16 @@ class HistoriquePage(QScrollArea):
 
         self.listecommande = ListeCommandes(self)
         self.div.addWidget(self.listecommande)
+        
+        self.from_date.dateChanged.connect(self.update_dates)
+        self.to_date.dateChanged.connect(self.update_dates)
+        self.update_dates()
+    
+    def update_dates(self):
+        print("update")
+        debut = int(self.from_date.date().toString("yyyyMMdd"))
+        fin = int(self.to_date.date().toString("yyyyMMdd"))
+        self.listecommande.update_dates(debut, fin)
     
     def event(self, event: QEvent):
         if event.type() is QEvent.Type.ApplicationActivated:

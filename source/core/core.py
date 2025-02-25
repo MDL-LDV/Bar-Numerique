@@ -5,6 +5,8 @@ from .Produit import ProduitData, CommandeData
 import sqlite3
 import sys
 
+from typing import Optional
+
 
 class MethodesPayment(StrEnum):
     CB = "CB"
@@ -25,7 +27,7 @@ def get_produit() -> list[ProduitData]:
     return produit_list
 
 
-def generate_csv(dates: list[str]):
+def generate_csv(dates: list[int]):
     connection = sqlite3.connect(sys.path[0] + "\\commandes.sqlite3")
     produits_list = get_produit()
     id_produit_map = {}
@@ -38,7 +40,7 @@ def generate_csv(dates: list[str]):
         requete = f"""
         SELECT id_produit, quantite FROM CommandeDetails 
         INNER JOIN Commande ON CommandeDetails.id_commande = Commande.id_commande 
-        WHERE date=\"{"\" OR date=\"".join(dates)}\";
+        WHERE date={" OR date=".join(dates)};
         """
         commandes = curseur.execute(requete).fetchall()
 
@@ -84,10 +86,12 @@ def enregistrer_commande(methode: MethodesPayment,
         Enregistre la commande dans un
     """ 
     connection = sqlite3.connect(sys.path[0] + "\\commandes.sqlite3")
-    # 01/01/2020
-    date = dt.today().strftime("%d/%m/%Y")
+    # 31/12/2020 -> 20201231
+    date = dt.today().strftime("%Y%m%d")
+    date = int(date)
     # 13:05
-    heure = dt.now().strftime("%H:%M")
+    heure = dt.now().strftime("%H%M")
+    heure = int(heure)
     try:
         curseur = connection.cursor()
         curseur.execute(f"""INSERT INTO Commande (date, heure, total) VALUES ("{date}", "{heure}", "{montant}")""")
@@ -103,18 +107,21 @@ def enregistrer_commande(methode: MethodesPayment,
         connection.close()
 
 
-def get_commande() -> list[CommandeData]:
+def get_commande(
+        debut: Optional[int] = None, 
+        fin: Optional[int] = None) -> list[CommandeData]:
     connection = sqlite3.connect(sys.path[0] + "\\commandes.sqlite3")
     curseur = connection.cursor()
-    data = curseur.execute("SELECT * FROM Commande").fetchall()
+    requete = "SELECT * FROM Commande"
+    if debut and fin:
+        requete += f" WHERE date >= {debut} AND date <= {fin}"
+    data = curseur.execute(requete).fetchall()
     connection.close()
 
     commande_list = []
     for row in data:
         data_dict = {key: row[i] for i, key in enumerate(CommandeData.model_fields.keys())}
         commande_list.append(CommandeData.model_validate(data_dict))
-
-    print(data)
 
     return commande_list
 

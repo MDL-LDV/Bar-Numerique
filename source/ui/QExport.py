@@ -114,12 +114,15 @@ class QExport(QDialog):
         date2 = self.date_fin.date()
 
         # On prend l'utilisateur pour un con et on corrige ses erreurs
-        depart, fin = date1, date2 if date1.getDate() <= date2.getDate() else date2, date1
+        if int(date1.toString("yyyyMMdd")) <= int(date2.toString("yyyyMMdd")):
+            depart, fin = date1, date2
+        else:
+            depart, fin = date2, date1
         
         diff = depart.daysTo(fin) + 1
         dates: list[str] = []
         for i in range(diff):
-            dates.append(depart.addDays(i).toString("dd/MM/yyyy"))
+            dates.append(int(depart.addDays(i).toString("yyyyMMdd")))
 
         donnees = generate_csv(dates)
 
