@@ -171,7 +171,6 @@ class HistoriquePage(QScrollArea):
         self.update_dates()
     
     def update_dates(self):
-        print("update")
         debut = int(self.from_date.date().toString("yyyyMMdd"))
         fin = int(self.to_date.date().toString("yyyyMMdd"))
         self.listecommande.update_dates(debut, fin)

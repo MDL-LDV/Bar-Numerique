@@ -51,14 +51,6 @@ class Vignette(QWidget):
         # return super().sizeHint()
         return self.size()
 
-# p = []
-
-# def print_unique(key, *args, **kwargs):
-#     global p
-#     if key not in p:
-#         print(*args, **kwargs)
-#         p.append(key)
-
 
 class CustomDelegate(QStyledItemDelegate):
     def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex | QPersistentModelIndex):
@@ -95,7 +87,7 @@ class CustomDelegate(QStyledItemDelegate):
         f = QFont()
         f.setPixelSize(17)
         painter.setFont(f)
-        painter.drawText(prixRect, str(item.data(-1).prix) + " €", Qt.AlignmentFlag.AlignLeft)
+        painter.drawText(prixRect, "{:.02f}".format(item.data(-1).prix) + " €", Qt.AlignmentFlag.AlignLeft)
 
         painter.setBrush(Qt.GlobalColor.transparent)
         painter.setPen(Qt.GlobalColor.black)
