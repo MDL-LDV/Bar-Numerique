@@ -122,7 +122,7 @@ class QExport(QDialog):
         diff = depart.daysTo(fin) + 1
         dates: list[str] = []
         for i in range(diff):
-            dates.append(int(depart.addDays(i).toString("yyyyMMdd")))
+            dates.append(depart.addDays(i).toString("yyyyMMdd"))
 
         donnees = generate_csv(dates)
 
@@ -134,6 +134,7 @@ class QExport(QDialog):
                 writer.writerows(donnees)
             finally:
                 file.close()
+        self.close()
     
     def get_monday(self: QExport):
         if self.today.dayOfWeek() > 1:

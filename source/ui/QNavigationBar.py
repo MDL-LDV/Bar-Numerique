@@ -26,7 +26,7 @@ class QNavigationBar(QWidget):
         self.onglets.setSpacing(5)
         self.onglets.setStyleSheet(
             """
-            QListWidget { 
+            QListWidget {
                 border-right: 1px solid #000000;
                 font-size: 22px;
                 font: bold;

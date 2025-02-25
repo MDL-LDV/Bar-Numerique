@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from PySide6.QtWidgets import (QMenuBar, QWidget, QMenu)
 from PySide6.QtGui import QResizeEvent, QPixmap, QAction
-from PySide6.QtCore import QSize, Qt, Signal
+from PySide6.QtCore import Signal
+
+import sys
 
 from .QExport import QExport
 
@@ -39,7 +41,7 @@ class QCustomMenu(QMenuBar):
         )
         
         self.menu_burger = QAction(self)
-        self.menu_burger.setIcon(QPixmap("assets/burger.svg"))
+        self.menu_burger.setIcon(QPixmap(sys.path[0] + "\\assets\\burger.svg"))
         self.menu_burger.triggered.connect(lambda: self.menuClicked.emit())
         self.addAction(self.menu_burger)
 

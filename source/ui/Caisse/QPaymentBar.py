@@ -225,7 +225,7 @@ class Payment(QWidget):
         self.div.addWidget(self.total_label, 0, 0, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
 
         self.prix_label = QLabel(self)
-        self.prix_label.setText(f"{self.prix_total} €")
+        self.update_prix()
         self.prix_label.adjustSize()
         self.div.addWidget(self.prix_label, 0, 2, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight)
 
@@ -269,11 +269,11 @@ class Payment(QWidget):
         return QSize(0, 0)
     
     def update_prix(self: Payment):
-        self.prix_label.setText(f"{self.prix_total} €")
+        self.prix_label.setText("{:.02f} €".format(self.prix_total))
     
     def clear_prix(self: Payment):
         self.prix_total -= self.prix_total
-        self.prix_label.setText(f"{self.prix_total} €")
+        self.update_prix()
 
     def addProduit(self: Payment, produit: ProduitData):
         self.liste_produits.append(produit)

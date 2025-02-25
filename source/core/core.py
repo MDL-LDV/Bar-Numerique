@@ -27,45 +27,102 @@ def get_produit() -> list[ProduitData]:
     return produit_list
 
 
-def generate_csv(dates: list[int]):
+def concatenation(
+        main_liste: list, 
+        args: tuple[dict], 
+        conv: tuple[callable], 
+        extract_function: callable = None):
+    result = []
+    
+    for value in main_liste:
+        if extract_function:
+            key = extract_function(value)
+        else:
+            key = value
+
+        row = [key]
+
+        for i, d in enumerate(args):
+            if conv[i] is not None:
+                row.append(conv[i](d[key]))
+            else:
+                row.append(d[key])
+            
+        result.append(row)
+
+    return result
+
+
+def generate_csv(dates: list[str]):
     connection = sqlite3.connect(sys.path[0] + "\\commandes.sqlite3")
-    produits_list = get_produit()
-    id_produit_map = {}
-    for produit in produits_list:
-        id_produit_map[produit.id_produit] = produit
+    produits = get_produit()
+    
+    table = []
     
     try:
         curseur = connection.cursor()
         
         requete = f"""
-        SELECT id_produit, quantite FROM CommandeDetails 
-        INNER JOIN Commande ON CommandeDetails.id_commande = Commande.id_commande 
-        WHERE date={" OR date=".join(dates)};
+        SELECT Produit.nom, Produit.prix, CommandeDetails.quantite 
+        FROM CommandeDetails 
+        INNER JOIN Commande ON 
+            CommandeDetails.id_commande = Commande.id_commande
+        INNER JOIN Produit ON 
+            CommandeDetails.id_produit = Produit.id_produit
+        WHERE (date={" OR date=".join(dates)})
         """
-        commandes = curseur.execute(requete).fetchall()
 
-        data = [
-            ["Produits", "Prix", "Quantités", "Totaux", "Total hebdomadaire"],
-        ]
+        for m in list(MethodesPayment):
+            methode = str(m)
 
-        produits_quantite = {}
-        for commande in commandes:
-            if commande[0] in produits_quantite:
-                produits_quantite[commande[0]] += commande[1]
-            else:
-                produits_quantite[commande[0]] = commande[1]
-        
-        total_general = Decimal()
-        for id_produit, quantite in produits_quantite.items():
-            produit: ProduitData = id_produit_map[id_produit]
-            total = produit.prix * quantite
-            total_general += total
+            requete_methode = requete + f" AND methode=\"{methode}\";"
+            commandes = curseur.execute(requete_methode).fetchall()
+            table_part = [
+                [methode, None, None, None, None],
+                ["Produits", "Prix", "Quantités", "Totaux", "Total hebdomadaire"],
+            ]
+            produits_quantite = {}
+            produit_total = {}
+            produit_prix = {}
+            empty_row = {}
+            total_general = Decimal()
+
+            for commande in commandes:
+                nom = commande[0]
+                prix = Decimal(commande[1])
+                quantite = int(commande[2])
+                if commande[0] in produits_quantite:
+                    produits_quantite[nom] += quantite
+                    produit_total[nom] += prix * quantite
+                else:
+                    produits_quantite[nom] = quantite
+                    produit_total[nom] = prix * quantite
+                
+                total_general += prix * quantite
             
-            data.append([produit.nom, produit.prix, quantite, total, None])
+            for produit in produits:
+                if produit.nom not in produits_quantite:
+                    produits_quantite[produit.nom] = 0
+                    produit_total[produit.nom] = Decimal()
+                
+                produit_prix[produit.nom] = produit.prix
+                empty_row[produit.nom] = None
+            
+            data = concatenation(
+                produits, 
+                (produit_prix, produits_quantite, produit_total, empty_row), 
+                (lambda v: str(v), None, lambda v: str(v), None),
+                extract_function=lambda p: p.nom)
 
-        data.append([None, None, None, None, total_general])
-        
-        return data
+            data = sorted(data, key=lambda t: t[0])
+
+            table_part.extend(data)
+            
+            table_part.append([None, None, None, None, str(total_general)])
+            table_part.append([None, None, None, None, None])
+
+            table.extend(table_part)
+        return table
     except Exception as e:
         print(e)
     finally:
@@ -94,7 +151,7 @@ def enregistrer_commande(methode: MethodesPayment,
     heure = int(heure)
     try:
         curseur = connection.cursor()
-        curseur.execute(f"""INSERT INTO Commande (date, heure, total) VALUES ("{date}", "{heure}", "{montant}")""")
+        curseur.execute(f"""INSERT INTO Commande (date, heure, total, methode) VALUES ("{date}", "{heure}", "{montant}", "{str(methode)}")""")
         id_commande = curseur.execute("SELECT MAX(Commande.id_commande) FROM Commande").fetchall()[0][0]
         
         for produit, quantite in produits.items():
