@@ -69,13 +69,13 @@ class EntreeProduit(QFrame):
 
         self.nombre = 1
 
-        self.plus_button = QPushButton(self)
-        self.plus_button.setFixedSize(25, 25)
-        self.plus_button.pressed.connect(self.incremente)
-        self.plus_button.setText("+")
-        self.plus_button.adjustSize()
-        self.div.addWidget(self.plus_button, 0, 1, Qt.AlignmentFlag.AlignCenter)
-        self.div.setColumnStretch(1, 1)
+        self.minus_button = QPushButton(self)
+        self.minus_button.setFixedSize(25, 25)
+        self.minus_button.pressed.connect(self.decremente)
+        self.minus_button.setText("-")
+        self.minus_button.adjustSize()
+        self.div.addWidget(self.minus_button, 0, 1, Qt.AlignmentFlag.AlignCenter)
+        self.div.setColumnStretch(3, 1)
 
         self.quantite_label = QLabel(self)
         self.quantite_label.setText(str(self.nombre))
@@ -83,13 +83,13 @@ class EntreeProduit(QFrame):
         self.div.addWidget(self.quantite_label, 0, 2, Qt.AlignmentFlag.AlignCenter)
         self.div.setColumnStretch(2, 1)
 
-        self.minus_button = QPushButton(self)
-        self.minus_button.setFixedSize(25, 25)
-        self.minus_button.pressed.connect(self.decremente)
-        self.minus_button.setText("-")
-        self.minus_button.adjustSize()
-        self.div.addWidget(self.minus_button, 0, 3, Qt.AlignmentFlag.AlignCenter)
-        self.div.setColumnStretch(3, 1)
+        self.plus_button = QPushButton(self)
+        self.plus_button.setFixedSize(25, 25)
+        self.plus_button.pressed.connect(self.incremente)
+        self.plus_button.setText("+")
+        self.plus_button.adjustSize()
+        self.div.addWidget(self.plus_button, 0, 3, Qt.AlignmentFlag.AlignCenter)
+        self.div.setColumnStretch(1, 1)
 
         self.setMinimumWidth(200)
         self.setFixedHeight(45)

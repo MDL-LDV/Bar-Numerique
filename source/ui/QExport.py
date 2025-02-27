@@ -50,7 +50,7 @@ class QExport(QDialog):
         self.setModal(True)
         self.resize(700, 500)
         self.today: QDate = QDateTime.currentDateTime().date()
-        self.setStyleSheet("color: black;")
+        self.setStyleSheet("color: black; font: 15px;")
 
         # QGridLayout (#1)
         self.main_layout = QGridLayout(self)
