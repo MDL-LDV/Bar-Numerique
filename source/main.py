@@ -1,7 +1,10 @@
 from PySide6.QtWidgets import QApplication, QMessageBox
 from PySide6.QtCore import QLockFile
-import sys
 from ui.MainWindow import MainWindow
+from pathlib import Path
+from shutil import move
+import sys
+import os
 
 
 if __name__ == "__main__" and sys.version_info >= (3, 12):
@@ -16,6 +19,19 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
     #sert à s'assurer qu'une instance de l'appli est démarer
     lock_file = QLockFile("app.lock")
     if lock_file.tryLock(100):
+
+        #verifie si la db est toujours dans le strockage local de l'appli
+        if (Path.is_file(sys.path[0] + "\\commandes.sqlite3")):
+            #migre la db dans path= %appdata%\Bar-Numerique
+            appdata_path = Path(os.getenv('APPDATA'))
+            if Path.is_dir(appdata_path + "\\Bar-Numerique"):
+                move(sys.path[0] + "\\commandes.sqlite3", (appdata_path + "\\Bar-Numerique\\commandes.sqlite3"))
+                print("The db as been moved to %AppData%\Bar-Numerique\\commandes.sqlite3")
+            else:
+                Path(appdata_path  +  "\\Bar-Numerique").mkdir(parents=True, exist_ok=True)
+                move(sys.path[0] + "\\commandes.sqlite3", (appdata_path + "\\Bar-Numerique\\commandes.sqlite3"))
+                print("The db as been moved to %AppData%\Bar-Numerique\\commandes.sqlite3")
+
         # Proceed with your application
         print("Starting the application.")
         # Your application code here
@@ -27,7 +43,7 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
         # Définition du nom de l'organisation de l'application
         application.setOrganizationName("Maison Des Lycéens")
         # Définition du nom de domain de l'application
-        # application.setOrganizationDomain("")
+        # application.setOrganizationDomain("") 
         # Définition de la version de l'application (normalisé)
         # https://semver.org/spec/v2.0.0.html
         application.setApplicationVersion("v1.0.0-poc")
