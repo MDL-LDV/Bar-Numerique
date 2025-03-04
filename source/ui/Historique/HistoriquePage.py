@@ -92,10 +92,19 @@ class Commande(QFrame):
         return self.minimumSize()
 
 
-class ListeCommandes(QFrame):
+class ListeCommandes(QScrollArea):
     def __init__(self: ListeCommandes, parent: QWidget) -> None:
         super().__init__(parent)
+        self.setFrameShape(QFrame.Shape.NoFrame)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.setWidgetResizable(True)
+        
+        self.widget_central = QWidget(self)
+        self.setWidget(self.widget_central)
+
         self.div = QVBoxLayout(self)
+        self.widget_central.setLayout(self.div)
+
         self.div.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         self.commande_liste: list = []
         self.debut = None

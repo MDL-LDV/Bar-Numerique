@@ -4,6 +4,10 @@ from enum import StrEnum
 from .Produit import ProduitData, CommandeData
 import sqlite3
 import sys
+import os
+
+COMMANDE_PATH = os.getenv("APPDATA") + "\\Bar-Numerique\\commandes.sqlite3"
+print(COMMANDE_PATH)
 
 from typing import Optional
 
@@ -14,7 +18,7 @@ class MethodesPayment(StrEnum):
 
 
 def get_produit() -> list[ProduitData]:
-    connection = sqlite3.connect(sys.path[0] + "\\commandes.sqlite3")
+    connection = sqlite3.connect(COMMANDE_PATH)
     curseur = connection.cursor()
     data = curseur.execute("SELECT * FROM Produit").fetchall()
     connection.close()
@@ -54,7 +58,7 @@ def concatenation(
 
 
 def generate_csv(dates: list[str]):
-    connection = sqlite3.connect(sys.path[0] + "\\commandes.sqlite3")
+    connection = sqlite3.connect(COMMANDE_PATH)
     produits = get_produit()
     
     table = []
@@ -142,7 +146,7 @@ def enregistrer_commande(methode: MethodesPayment,
     Rôle:
         Enregistre la commande dans un
     """ 
-    connection = sqlite3.connect(sys.path[0] + "\\commandes.sqlite3")
+    connection = sqlite3.connect(COMMANDE_PATH)
     # 31/12/2020 -> 20201231
     date = dt.today().strftime("%Y%m%d")
     date = int(date)
@@ -167,7 +171,7 @@ def enregistrer_commande(methode: MethodesPayment,
 def get_commande(
         debut: Optional[int] = None, 
         fin: Optional[int] = None) -> list[CommandeData]:
-    connection = sqlite3.connect(sys.path[0] + "\\commandes.sqlite3")
+    connection = sqlite3.connect(COMMANDE_PATH)
     curseur = connection.cursor()
     requete = "SELECT * FROM Commande"
     if debut and fin:
@@ -176,7 +180,8 @@ def get_commande(
     connection.close()
 
     commande_list = []
-    for row in data:
+    for i in range(len(data) - 1, -1, -1):
+        row = data[i]
         data_dict = {key: row[i] for i, key in enumerate(CommandeData.model_fields.keys())}
         commande_list.append(CommandeData.model_validate(data_dict))
 
@@ -184,7 +189,7 @@ def get_commande(
 
 
 def delete_commande(id_commande: int) -> None:
-    connection = sqlite3.connect(sys.path[0] + "\\commandes.sqlite3")
+    connection = sqlite3.connect(COMMANDE_PATH)
     curseur = connection.cursor()
 
     try:

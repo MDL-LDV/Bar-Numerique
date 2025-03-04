@@ -21,16 +21,18 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
     if lock_file.tryLock(100):
 
         #verifie si la db est toujours dans le strockage local de l'appli
-        if (Path.is_file(sys.path[0] + "\\commandes.sqlite3")):
+        if (os.path.isfile(sys.path[0] + "\\commandes.sqlite3")):
             #migre la db dans path= %appdata%\Bar-Numerique
-            appdata_path = Path(os.getenv('APPDATA'))
-            if Path.is_dir(appdata_path + "\\Bar-Numerique"):
-                move(sys.path[0] + "\\commandes.sqlite3", (appdata_path + "\\Bar-Numerique\\commandes.sqlite3"))
-                print("The db as been moved to %AppData%\Bar-Numerique\\commandes.sqlite3")
-            else:
-                Path(appdata_path  +  "\\Bar-Numerique").mkdir(parents=True, exist_ok=True)
-                move(sys.path[0] + "\\commandes.sqlite3", (appdata_path + "\\Bar-Numerique\\commandes.sqlite3"))
-                print("The db as been moved to %AppData%\Bar-Numerique\\commandes.sqlite3")
+            appdata_path = os.getenv('APPDATA')
+            
+            if not os.path.exists(appdata_path + "\\Bar-Numerique\\commandes.sqlite3"):
+                if os.path.isdir(appdata_path + "\\Bar-Numerique"):
+                    move(sys.path[0] + "\\commandes.sqlite3", (appdata_path + "\\Bar-Numerique\\commandes.sqlite3"))
+                    print("The db as been moved to %AppData%\\Bar-Numerique\\commandes.sqlite3")
+                else:
+                    Path(appdata_path  +  "\\Bar-Numerique").mkdir(parents=True, exist_ok=True)
+                    move(sys.path[0] + "\\commandes.sqlite3", (appdata_path + "\\Bar-Numerique\\commandes.sqlite3"))
+                    print("The db as been moved to %AppData%\\Bar-Numerique\\commandes.sqlite3")
 
         # Proceed with your application
         print("Starting the application.")
@@ -46,7 +48,7 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
         # application.setOrganizationDomain("") 
         # Définition de la version de l'application (normalisé)
         # https://semver.org/spec/v2.0.0.html
-        application.setApplicationVersion("v1.0.1-alpha")
+        application.setApplicationVersion("v1.0.2-alpha")
 
         # Instanciation de MainWindow, la fenêtre principale
         window = MainWindow(None)
@@ -54,13 +56,7 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
         # Ensure the lock is released when the application exits
         application.aboutToQuit.connect(lock_file.unlock)
 
-        sys.exit(application.exec_())
+        sys.exit(application.exec())
     else:
         QMessageBox.warning(None, "Error", "The application is already running!")
         sys.exit(1)
-
-        
-
-    
-    
-
