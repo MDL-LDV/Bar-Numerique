@@ -2,7 +2,8 @@ from PySide6.QtWidgets import QApplication, QMessageBox
 from PySide6.QtCore import QLockFile
 from ui.MainWindow import MainWindow
 from pathlib import Path
-from shutil import move, copy
+from shutil import copy
+from getConfig import checkConfig
 import sys
 import os
 
@@ -14,6 +15,13 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
     
     # Déclaration de application
     application = QApplication(sys.argv)
+
+    config = checkConfig(list((
+        list(("Version", "1.0.0")), 
+        list(("OrgaName", "Maison Des Lycéens")),
+        list(("AppName", "Bar numérique")),
+        list(("QTheme", "Fusion"))
+    )))
 
     #creer un fichier lock
     #sert à s'assurer qu'une instance de l'appli est démarer
@@ -39,16 +47,16 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
         # Your application code here
 
         # Standardisation du style sur tous les OS
-        application.setStyle("Fusion")
+        application.setStyle(config["QTheme"])
         # Définition du nom de l'application
-        application.setApplicationName("Bar numérique")
+        application.setApplicationName(config["AppName"])
         # Définition du nom de l'organisation de l'application
-        application.setOrganizationName("Maison Des Lycéens")
+        application.setOrganizationName(config["OrgaName"])
         # Définition du nom de domain de l'application
         # application.setOrganizationDomain("") 
         # Définition de la version de l'application (normalisé)
         # https://semver.org/spec/v2.0.0.html
-        application.setApplicationVersion("v1.0.2-alpha")
+        application.setApplicationVersion(config["Version"])
 
         # Instanciation de MainWindow, la fenêtre principale
         window = MainWindow(None)
