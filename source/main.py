@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QApplication, QMessageBox
 from PySide6.QtCore import QLockFile
 from ui.MainWindow import MainWindow
 from pathlib import Path
-from shutil import move
+from shutil import move, copy
 import sys
 import os
 
@@ -27,11 +27,11 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
             
             if not os.path.exists(appdata_path + "\\Bar-Numerique\\commandes.sqlite3"):
                 if os.path.isdir(appdata_path + "\\Bar-Numerique"):
-                    move(sys.path[0] + "\\commandes.sqlite3", (appdata_path + "\\Bar-Numerique\\commandes.sqlite3"))
+                    copy(sys.path[0] + "\\commandes.sqlite3", (appdata_path + "\\Bar-Numerique\\commandes.sqlite3"))
                     print("The db as been moved to %AppData%\\Bar-Numerique\\commandes.sqlite3")
                 else:
                     Path(appdata_path  +  "\\Bar-Numerique").mkdir(parents=True, exist_ok=True)
-                    move(sys.path[0] + "\\commandes.sqlite3", (appdata_path + "\\Bar-Numerique\\commandes.sqlite3"))
+                    copy(sys.path[0] + "\\commandes.sqlite3", (appdata_path + "\\Bar-Numerique\\commandes.sqlite3"))
                     print("The db as been moved to %AppData%\\Bar-Numerique\\commandes.sqlite3")
 
         # Proceed with your application
