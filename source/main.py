@@ -16,6 +16,10 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
     # Déclaration de application
     application = QApplication(sys.argv)
 
+
+    #recupere la configuation dans config.ini
+    #en specifiant les valeurs à trouver et la value 
+    #si la valeur est pas configurée
     config = checkConfig(list((
         list(("Version", "1.0.0")), 
         list(("OrgaName", "Maison Des Lycéens")),
