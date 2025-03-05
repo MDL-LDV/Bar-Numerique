@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (QWidget, QFrame, QScrollArea, QVBoxLayout,
 from PySide6.QtGui import QIcon
 from PySide6.QtCore import Qt, QDateTime, QDate, QEvent, Signal
 from core.core import get_commande, delete_commande
+from core.Logger import BarLogger
 from core.Produit import CommandeData
 import sys
 
@@ -15,6 +16,7 @@ class Commande(QFrame):
     
     def __init__(self: Commande, parent: QWidget, commande: CommandeData) -> None:
         super().__init__(parent)
+        self.logger = BarLogger("CommandLogger")
         self.setFixedSize(400, 70)
         self.commande = commande
         self.setStyleSheet(
@@ -83,6 +85,7 @@ class Commande(QFrame):
         if button == QMessageBox.StandardButton.Yes:
             delete_commande(self.commande.id_commande)
             self.deleted.emit()
+            self.logger.info(f"La commande {self.commande.id_commande} à été suprimé")
     
     def sizeHint(self):
         # return super().sizeHint()

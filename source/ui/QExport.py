@@ -5,11 +5,12 @@ from PySide6.QtWidgets import (QPushButton, QDialog, QWidget, QFormLayout, QDate
 from PySide6.QtCore import QDateTime, QDate, Qt
 from PySide6.QtGui import QPalette, QTextCharFormat
 
+
 import csv
 from os.path import exists
 
 from core.core import generate_csv
-
+from core.Logger import BarLogger
 
 class QCalendarRangeWidget(QCalendarWidget):
     def __init__(self, parent: QWidget):
@@ -51,6 +52,8 @@ class QExport(QDialog):
         self.resize(700, 500)
         self.today: QDate = QDateTime.currentDateTime().date()
         self.setStyleSheet("color: black; font: 15px;")
+
+        self.logger = BarLogger("ExportLogger")
 
         # QGridLayout (#1)
         self.main_layout = QGridLayout(self)
@@ -104,6 +107,7 @@ class QExport(QDialog):
             fichier = f"/livre_comptes_{depart}_{fin}"
             
             self.exporter_as_csv(folder + fichier)
+            self.logger.info(f"Exportation CSV réussi sous le nom {folder + fichier}.csv")
         
         self.close()
     

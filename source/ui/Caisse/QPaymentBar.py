@@ -9,7 +9,7 @@ from decimal import Decimal
 from PySide6.QtGui import QFontMetrics
 
 from core.QtAddOns import QRatioSlitter
-
+from core.Logger import BarLogger
 
 class EllipsisLabel(QLabel):
     """

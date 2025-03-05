@@ -1,7 +1,7 @@
 from pathlib import Path
 from configparser import ConfigParser
 
-def acquire(ConfigName: str, Dbpath: Path = "config.ini") -> object|None:
+def acquire(ConfigName: str, inipath: Path = "config.ini") -> object|None:
     """
     récupere une valeur de configuration 
     en priorisant si elle à été customisé via ["Custom"]
@@ -20,7 +20,7 @@ def acquire(ConfigName: str, Dbpath: Path = "config.ini") -> object|None:
 
     """
     parser = ConfigParser()
-    parser.read(Dbpath)
+    parser.read(inipath)
 
     if (ConfigName in parser["Custom"]):
         return parser["Custom"][ConfigName]
@@ -29,7 +29,7 @@ def acquire(ConfigName: str, Dbpath: Path = "config.ini") -> object|None:
     else :
         return None
     
-def checkConfig(listCheck: list[list[str, str]], Dbpath: Path = "config.ini") -> dict[str]:
+def checkConfig(listCheck: list[list[str, str]], inipath: Path = "config.ini") -> dict[str]:
     """
     recupere une list de valeur dans le fichier de configuration
     si la valeur est pas present, elle est remplace par une valeur 
@@ -48,7 +48,7 @@ def checkConfig(listCheck: list[list[str, str]], Dbpath: Path = "config.ini") ->
             et comme valeur celle trouve ou specifie
     """
     parser = ConfigParser()
-    parser.read(Dbpath)
+    parser.read(inipath)
     retConfig: dict[str] = dict()
     for (configName, default) in listCheck:
             retConfig[configName] = conf if (conf := acquire(configName)) else default

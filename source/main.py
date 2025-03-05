@@ -4,6 +4,7 @@ from ui.MainWindow import MainWindow
 from pathlib import Path
 from shutil import copy
 from getConfig import checkConfig
+from core.Logger import BarLogger
 import sys
 import os
 
@@ -16,7 +17,6 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
     # Déclaration de application
     application = QApplication(sys.argv)
 
-
     #recupere la configuation dans config.ini
     #en specifiant les valeurs à trouver et la value 
     #si la valeur est pas configurée
@@ -24,8 +24,14 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
         list(("Version", "1.0.0")), 
         list(("OrgaName", "Maison Des Lycéens")),
         list(("AppName", "Bar numérique")),
-        list(("QTheme", "Fusion"))
+        list(("QTheme", "Fusion")),
+        list(("LogLevel", "INFO"))
     )))
+
+    if (config["LogLevel"].isdigit() and ((int(config["LogLevel"]) % 10) == 0)):
+        logger = BarLogger("MainLogger", int(config["LogLevel"]))
+    else:
+        logger = BarLogger("MainLogger", 20)#20 revient à logging.INFO
 
     #creer un fichier lock
     #sert à s'assurer qu'une instance de l'appli est démarer
@@ -47,7 +53,7 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
                     print("The db as been moved to %AppData%\\Bar-Numerique\\commandes.sqlite3")
 
         # Proceed with your application
-        print("Starting the application.")
+        logger.info("Starting the application.")
         # Your application code here
 
         # Standardisation du style sur tous les OS
@@ -67,6 +73,7 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
 
         # Ensure the lock is released when the application exits
         application.aboutToQuit.connect(lock_file.unlock)
+        application.aboutToQuit.connect(lambda:logger.info("Closing the application."))
 
         sys.exit(application.exec())
     else:
