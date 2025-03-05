@@ -10,6 +10,7 @@ LoggingLevel = Literal[
     0 #logging.NOTSET
 ]
 
+
 class BarLogger:
     def __init__(self, name, level: LoggingLevel = logging.INFO, log_file='application.log'):
         self.logger = logging.getLogger(name)
@@ -43,4 +44,3 @@ class BarLogger:
 
     def critical(self, message):
         self.logger.critical(message)
-
