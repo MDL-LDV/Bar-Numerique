@@ -16,7 +16,6 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
     # Déclaration de application
     application = QApplication(sys.argv)
 
-
     #recupere la configuation dans config.ini
     #en specifiant les valeurs à trouver et la value 
     #si la valeur est pas configurée
@@ -51,7 +50,7 @@ if __name__ == "__main__" and sys.version_info >= (3, 12):
         # Your application code here
 
         # Standardisation du style sur tous les OS
-        application.setStyle(config["QTheme"])
+        application.setStyle("Fusion")
         # Définition du nom de l'application
         application.setApplicationName(config["AppName"])
         # Définition du nom de l'organisation de l'application

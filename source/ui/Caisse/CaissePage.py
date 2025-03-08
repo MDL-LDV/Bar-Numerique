@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget, QFrame
 
 from typing import Optional
 
@@ -13,6 +13,8 @@ class CaissePage(QRatioSlitter):
     def __init__(self: CaissePage, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self.setObjectName("Caisse")
+        self.setFrameShape(QFrame.Shape.NoFrame)
+        self.setStyleSheet("QSplitter#Caisse:handle { border-left: 1px solid black }")
         self.setAllCollapsible(False)
 
         self.produits = QListProduits(self)

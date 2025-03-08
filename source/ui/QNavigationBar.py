@@ -1,5 +1,5 @@
 from __future__ import annotations
-from PySide6.QtWidgets import QWidget, QListWidget, QListWidgetItem
+from PySide6.QtWidgets import QWidget, QListWidget, QFrame
 from PySide6.QtCore import Qt, QEvent, Signal
 
 from core.QtAddOns import QListWidgetItemId
@@ -23,6 +23,7 @@ class QNavigationBar(QWidget):
         super().__init__(parent)
 
         self.onglets = QListWidget(self)
+        self.onglets.setFrameShape(QFrame.Shape.NoFrame)
         self.onglets.setSpacing(5)
         self.onglets.setStyleSheet(
             """
