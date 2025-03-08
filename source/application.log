@@ -1,0 +1,142 @@
+[2025-03-04 17:52:26,734] |"INFO"| - INFO: Starting the application.
+[2025-03-04 17:53:07,434] |"INFO"| - INFO: Closing the application.
+[2025-03-04 18:05:42,428] |MainLogger| - INFO: Starting the application.
+[2025-03-04 18:09:13,539] |MainLogger| - INFO: Closing the application.
+[2025-03-04 18:11:43,929] |MainLogger| - INFO: Starting the application.
+[2025-03-04 18:12:21,951] |ExportLogger| - INFO: Exportation CSV réussi sous le nom C:/Users/Von/Desktop/livre_comptes_03-03-2025_04-03-2025.csv
+[2025-03-04 18:22:03,152] |MainLogger| - INFO: Closing the application.
+[2025-03-04 18:22:06,262] |MainLogger| - INFO: Starting the application.
+[2025-03-04 18:22:12,168] |CommandLogger| - INFO: La commande 2 à été suprimé
+[2025-03-04 18:22:12,168] |CommandLogger| - INFO: La commande 2 à été suprimé
+[2025-03-04 18:22:12,168] |CommandLogger| - INFO: La commande 2 à été suprimé
+[2025-03-04 18:24:09,916] |MainLogger| - INFO: Closing the application.
+[2025-03-04 18:24:19,361] |MainLogger| - INFO: Starting the application.
+[2025-03-04 18:24:27,212] |CommandLogger| - INFO: La commande 3 à été suprimé
+[2025-03-04 18:24:47,705] |CommandLogger| - INFO: La commande 4 à été suprimé
+[2025-03-04 18:24:47,705] |CommandLogger| - INFO: La commande 4 à été suprimé
+[2025-03-04 18:25:11,584] |MainLogger| - INFO: Closing the application.
+[2025-03-04 18:25:15,808] |MainLogger| - INFO: Starting the application.
+[2025-03-04 18:25:24,247] |CommandLogger| - INFO: La commande 4 à été suprimé
+[2025-03-04 18:25:24,247] |CommandLogger| - INFO: La commande 4 à été suprimé
+[2025-03-04 18:25:24,247] |CommandLogger| - INFO: La commande 4 à été suprimé
+[2025-03-04 18:25:38,773] |CommandLogger| - INFO: La commande 5 à été suprimé
+[2025-03-04 18:25:38,773] |CommandLogger| - INFO: La commande 5 à été suprimé
+[2025-03-04 18:25:38,773] |CommandLogger| - INFO: La commande 5 à été suprimé
+[2025-03-04 18:25:38,773] |CommandLogger| - INFO: La commande 5 à été suprimé
+[2025-03-04 18:39:24,034] |MainLogger| - INFO: Closing the application.
+[2025-03-04 18:39:33,941] |MainLogger| - INFO: Starting the application.
+[2025-03-04 18:39:40,996] |CommandLogger| - INFO: La commande 6 à été suprimé
+[2025-03-04 18:40:02,192] |CommandLogger| - INFO: La commande 7 à été suprimé
+[2025-03-04 18:40:02,192] |CommandLogger| - INFO: La commande 7 à été suprimé
+[2025-03-04 18:40:18,486] |CommandLogger| - INFO: La commande 8 à été suprimé
+[2025-03-04 18:40:18,486] |CommandLogger| - INFO: La commande 8 à été suprimé
+[2025-03-04 18:40:18,486] |CommandLogger| - INFO: La commande 8 à été suprimé
+[2025-03-04 18:41:09,505] |MainLogger| - INFO: Closing the application.
+[2025-03-04 18:41:13,674] |MainLogger| - INFO: Starting the application.
+[2025-03-04 18:41:19,273] |CommandLogger| - INFO: La commande 9 à été suprimé
+[2025-03-04 18:41:25,817] |CommandLogger| - INFO: La commande 10 à été suprimé
+[2025-03-04 18:41:25,817] |CommandLogger| - INFO: La commande 10 à été suprimé
+[2025-03-04 18:43:35,878] |MainLogger| - INFO: Closing the application.
+[2025-03-04 18:43:39,432] |MainLogger| - INFO: Starting the application.
+[2025-03-04 18:57:30,402] |MainLogger| - INFO: Closing the application.
+[2025-03-04 19:10:36,356] |MainLogger| - INFO: Starting the application.
+[2025-03-04 19:11:01,221] |MainLogger| - INFO: Closing the application.
+[2025-03-04 19:11:03,764] |MainLogger| - INFO: Starting the application.
+[2025-03-04 19:11:31,754] |MainLogger| - INFO: Closing the application.
+[2025-03-04 19:11:34,452] |MainLogger| - INFO: Starting the application.
+[2025-03-04 19:11:59,522] |MainLogger| - INFO: Closing the application.
+[2025-03-04 19:12:03,843] |MainLogger| - INFO: Starting the application.
+[2025-03-04 19:16:29,062] |MainLogger| - INFO: Closing the application.
+[2025-03-04 19:21:58,601] |MainLogger| - INFO: Starting the application.
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:03,094] |CommandLogger| - INFO: La commande 15 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 19:22:05,042] |CommandLogger| - INFO: La commande 14 à été suprimé
+[2025-03-04 20:27:06,357] |MainLogger| - INFO: Closing the application.
+[2025-03-04 20:27:16,488] |MainLogger| - INFO: Starting the application.
+[2025-03-04 20:27:24,003] |CommandLogger| - INFO: La commande 16 à été suprimé
+[2025-03-04 20:27:24,003] |CommandLogger| - INFO: La commande 16 à été suprimé
+[2025-03-04 20:27:24,003] |CommandLogger| - INFO: La commande 16 à été suprimé
+[2025-03-04 20:27:24,003] |CommandLogger| - INFO: La commande 16 à été suprimé
+[2025-03-04 20:27:24,003] |CommandLogger| - INFO: La commande 16 à été suprimé
+[2025-03-04 20:27:24,003] |CommandLogger| - INFO: La commande 16 à été suprimé
+[2025-03-04 20:27:24,003] |CommandLogger| - INFO: La commande 16 à été suprimé
+[2025-03-04 20:27:24,003] |CommandLogger| - INFO: La commande 16 à été suprimé
+[2025-03-04 20:27:24,003] |CommandLogger| - INFO: La commande 16 à été suprimé
+[2025-03-04 20:27:24,003] |CommandLogger| - INFO: La commande 16 à été suprimé
+[2025-03-04 20:27:24,003] |CommandLogger| - INFO: La commande 16 à été suprimé
+[2025-03-04 20:27:24,003] |CommandLogger| - INFO: La commande 16 à été suprimé
+[2025-03-04 20:27:24,003] |CommandLogger| - INFO: La commande 16 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:25,869] |CommandLogger| - INFO: La commande 13 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:27,465] |CommandLogger| - INFO: La commande 12 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
