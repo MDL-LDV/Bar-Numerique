@@ -5,7 +5,7 @@ from PySide6.QtWidgets import (QWidget, QFrame, QScrollArea, QVBoxLayout,
     QPushButton, QSpacerItem, QMessageBox)
 from PySide6.QtGui import QIcon
 from PySide6.QtCore import Qt, QDateTime, QDate, QEvent, Signal
-from core.core import get_commande, delete_commande
+from core.core import get_commande, delete_commande, get_commande_detail, get_produit
 from core.Logger import BarLogger
 from core.Produit import CommandeData
 import sys
@@ -33,9 +33,10 @@ class Commande(QFrame):
 
         self.div = QGridLayout(self)
         
-        self.identifiant = QLabel(self)
+        self.identifiant = ClickableLabel(self)
         self.identifiant.setStyleSheet("font-size: 20px; text-decoration: underline; font: bold;")
         self.identifiant.setText(f"Commande {self.commande.id_commande}")
+        self.identifiant.clicked.connect(self.showDetailCommand)
         self.div.addWidget(self.identifiant, 0, 0, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
 
 
@@ -81,12 +82,34 @@ class Commande(QFrame):
         confirme.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         confirme.setDefaultButton(QMessageBox.StandardButton.No)
         button = confirme.exec()
-
+        
         if button == QMessageBox.StandardButton.Yes:
             delete_commande(self.commande.id_commande)
             self.deleted.emit()
             self.logger.info(f"La commande {self.commande.id_commande} à été suprimé")
     
+    def showDetailCommand(self, text: str):# text is provided by overrited mousePressEvent on Clickable label
+        idCommand = text[9:]# 9 correspond taille "Commande "
+        commandDetail = get_commande_detail(int(idCommand))
+        listProduit = get_produit()
+        textMessage = ""
+        if commandDetail == []:
+            textMessage += "Commande non retrouvé dans la base de donnée"
+        else:
+            for Detail in commandDetail:
+                nom = "".join([i.nom for i in listProduit if i.id_produit == Detail.id_produit])
+                textMessage += f"{nom}: {Detail.quantite} \n"
+        
+        confirme = QMessageBox(self)
+        confirme.setStyleSheet("QLabel#qt_msgbox_label { font: bold 15px; }")
+        confirme.setWindowTitle("Bar Numérique")
+        confirme.setText(f'Detail de la commande {idCommand}')
+        confirme.setIcon(QMessageBox.Icon.NoIcon)
+        confirme.setInformativeText(textMessage)
+        confirme.setStandardButtons(QMessageBox.StandardButton.Yes)
+        confirme.setDefaultButton(QMessageBox.StandardButton.Yes)
+        button = confirme.exec()
+
     def sizeHint(self):
         # return super().sizeHint()
         return self.minimumSizeHint()
@@ -191,3 +214,14 @@ class HistoriquePage(QScrollArea):
         if event.type() is QEvent.Type.ApplicationActivated:
             self.listecommande.update()
         return super().event(event)
+
+
+
+class ClickableLabel(QLabel):
+    clicked = Signal(str)  # Define a signal for click events
+
+    def __init__(self, text=""):
+        super().__init__(text)
+
+    def mousePressEvent(self, event):
+        self.clicked.emit(self.text())  # Emit the signal when the label is clicked

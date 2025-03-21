@@ -1,7 +1,7 @@
 from datetime import datetime as dt
 from decimal import Decimal
 from enum import StrEnum
-from .Produit import ProduitData, CommandeData
+from .Produit import ProduitData, CommandeData, CommandDetail
 import sqlite3
 import sys
 import os
@@ -184,6 +184,28 @@ def get_commande(
         row = data[i]
         data_dict = {key: row[i] for i, key in enumerate(CommandeData.model_fields.keys())}
         commande_list.append(CommandeData.model_validate(data_dict))
+
+    return commande_list
+
+def get_commande_detail(id: int = 0) -> list[CommandDetail]:
+    connection = sqlite3.connect(COMMANDE_PATH)
+    curseur = connection.cursor()
+    requete = "SELECT * FROM CommandeDetails"
+    requete += f" WHERE id_commande = {id}"
+
+    try:
+        data = curseur.execute(requete).fetchall()
+    except Exception as e:
+        data = {}
+    connection.close()
+
+    commande_list = []
+    for i in range(len(data) - 1, -1, -1):
+        row = data[i]
+        data_dict = {key: row[i] for i, key in enumerate(CommandDetail.model_fields.keys())}
+        commande_list.append(CommandDetail.model_validate(data_dict))
+
+    
 
     return commande_list
 

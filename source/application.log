@@ -140,3 +140,153 @@
 [2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
 [2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
 [2025-03-04 20:27:28,900] |CommandLogger| - INFO: La commande 11 à été suprimé
+[2025-03-07 12:30:42,241] |MainLogger| - INFO: Starting the application.
+[2025-03-07 12:30:59,455] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 12:31:00,633] |CommandLogger| - INFO: La commande 17 à été suprimé
+[2025-03-07 12:31:12,023] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 12:31:12,023] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 12:31:13,212] |CommandLogger| - INFO: La commande 18 à été suprimé
+[2025-03-07 12:31:13,212] |CommandLogger| - INFO: La commande 18 à été suprimé
+[2025-03-07 12:35:10,969] |MainLogger| - INFO: Closing the application.
+[2025-03-07 12:35:17,083] |MainLogger| - INFO: Starting the application.
+[2025-03-07 12:35:24,358] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 12:35:25,414] |CommandLogger| - INFO: La commande 19 à été suprimé
+[2025-03-07 12:38:20,445] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 12:38:20,445] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 12:38:34,832] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 12:38:34,832] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 12:55:31,010] |MainLogger| - INFO: Closing the application.
+[2025-03-07 13:03:15,164] |MainLogger| - INFO: Starting the application.
+[2025-03-07 13:03:37,245] |MainLogger| - INFO: Starting the application.
+[2025-03-07 13:03:44,638] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:03:44,638] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:03:44,638] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:03:44,638] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:03:46,234] |CommandLogger| - INFO: La commande 21 à été suprimé
+[2025-03-07 13:03:46,234] |CommandLogger| - INFO: La commande 21 à été suprimé
+[2025-03-07 13:03:46,234] |CommandLogger| - INFO: La commande 21 à été suprimé
+[2025-03-07 13:03:46,234] |CommandLogger| - INFO: La commande 21 à été suprimé
+[2025-03-07 13:03:46,234] |CommandLogger| - INFO: La commande 21 à été suprimé
+[2025-03-07 13:04:55,284] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:04:55,284] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:04:55,284] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:04:55,284] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:04:55,284] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:04:56,478] |CommandLogger| - INFO: La commande 20 à été suprimé
+[2025-03-07 13:04:56,478] |CommandLogger| - INFO: La commande 20 à été suprimé
+[2025-03-07 13:04:56,478] |CommandLogger| - INFO: La commande 20 à été suprimé
+[2025-03-07 13:04:56,478] |CommandLogger| - INFO: La commande 20 à été suprimé
+[2025-03-07 13:04:56,478] |CommandLogger| - INFO: La commande 20 à été suprimé
+[2025-03-07 13:05:34,011] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:05:34,011] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:05:34,011] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:05:34,011] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:05:34,011] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:05:34,011] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:08:06,275] |CommandLogger| - INFO: La commande 22 à été suprimé
+[2025-03-07 13:08:06,275] |CommandLogger| - INFO: La commande 22 à été suprimé
+[2025-03-07 13:08:06,275] |CommandLogger| - INFO: La commande 22 à été suprimé
+[2025-03-07 13:08:06,275] |CommandLogger| - INFO: La commande 22 à été suprimé
+[2025-03-07 13:08:06,275] |CommandLogger| - INFO: La commande 22 à été suprimé
+[2025-03-07 13:08:06,275] |CommandLogger| - INFO: La commande 22 à été suprimé
+[2025-03-07 13:16:06,910] |MainLogger| - INFO: Closing the application.
+[2025-03-07 13:16:34,318] |MainLogger| - INFO: Starting the application.
+[2025-03-07 13:16:47,021] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:16:48,681] |CommandLogger| - INFO: La commande 23 à été suprimé
+[2025-03-07 13:17:00,887] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:17:00,887] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:17:02,077] |CommandLogger| - INFO: La commande 24 à été suprimé
+[2025-03-07 13:17:02,077] |CommandLogger| - INFO: La commande 24 à été suprimé
+[2025-03-07 13:26:13,561] |MainLogger| - INFO: Starting the application.
+[2025-03-07 13:32:54,625] |MainLogger| - INFO: Closing the application.
+[2025-03-07 13:35:50,084] |MainLogger| - INFO: Starting the application.
+[2025-03-07 13:36:09,734] |MainLogger| - INFO: Starting the application.
+[2025-03-07 13:36:17,813] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:36:17,813] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:36:17,813] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:36:17,813] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:36:20,024] |CommandLogger| - INFO: La commande 25 à été suprimé
+[2025-03-07 13:36:20,024] |CommandLogger| - INFO: La commande 25 à été suprimé
+[2025-03-07 13:36:20,024] |CommandLogger| - INFO: La commande 25 à été suprimé
+[2025-03-07 13:36:20,024] |CommandLogger| - INFO: La commande 25 à été suprimé
+[2025-03-07 13:36:33,010] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:36:33,010] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:36:33,010] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 13:36:33,010] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 14:49:18,529] |MainLogger| - INFO: Starting the application.
+[2025-03-07 14:49:29,534] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 14:49:29,534] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 14:49:29,534] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 14:49:29,534] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 14:49:31,107] |CommandLogger| - INFO: La commande 26 à été suprimé
+[2025-03-07 14:49:31,107] |CommandLogger| - INFO: La commande 26 à été suprimé
+[2025-03-07 14:49:31,107] |CommandLogger| - INFO: La commande 26 à été suprimé
+[2025-03-07 14:49:31,107] |CommandLogger| - INFO: La commande 26 à été suprimé
+[2025-03-07 14:51:10,428] |MainLogger| - INFO: Closing the application.
+[2025-03-07 14:51:16,102] |MainLogger| - INFO: Starting the application.
+[2025-03-07 14:51:21,688] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 14:51:21,688] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 14:51:21,688] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-07 14:51:22,758] |CommandLogger| - INFO: La commande 27 à été suprimé
+[2025-03-07 14:51:22,758] |CommandLogger| - INFO: La commande 27 à été suprimé
+[2025-03-07 14:51:22,758] |CommandLogger| - INFO: La commande 27 à été suprimé
+[2025-03-08 13:28:30,982] |MainLogger| - INFO: Starting the application.
+[2025-03-08 13:28:37,714] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-08 13:28:49,830] |CommandLogger| - INFO: La commande 28 à été suprimé
+[2025-03-08 13:28:56,313] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-08 13:28:57,079] |CommandLogger| - INFO: La commande 28 à été suprimé
+[2025-03-08 13:28:59,268] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-08 13:29:00,241] |CommandLogger| - INFO: La commande 28 à été suprimé
+[2025-03-08 13:29:26,561] |MainLogger| - INFO: Closing the application.
+[2025-03-08 13:29:32,220] |MainLogger| - INFO: Starting the application.
+[2025-03-08 13:29:37,674] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-08 13:29:38,777] |CommandLogger| - INFO: La commande 29 à été suprimé
+[2025-03-08 13:31:19,638] |MainLogger| - INFO: Closing the application.
+[2025-03-08 13:31:40,947] |MainLogger| - INFO: Starting the application.
+[2025-03-08 13:31:48,338] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-08 13:32:02,358] |CommandLogger| - INFO: La commande 30 à été suprimé
+[2025-03-08 13:32:20,658] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-08 13:32:20,658] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-08 13:32:23,766] |CommandLogger| - INFO: La commande 31 à été suprimé
+[2025-03-08 13:32:23,766] |CommandLogger| - INFO: La commande 31 à été suprimé
+[2025-03-08 13:32:49,623] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-08 13:32:49,623] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-08 13:32:49,623] |CommandLogger| - INFO: Enter Delete_command function
+[2025-03-08 13:32:51,257] |CommandLogger| - INFO: La commande 32 à été suprimé
+[2025-03-08 13:32:51,257] |CommandLogger| - INFO: La commande 32 à été suprimé
+[2025-03-08 13:32:51,257] |CommandLogger| - INFO: La commande 32 à été suprimé
+[2025-03-08 13:33:39,396] |MainLogger| - INFO: Closing the application.
+[2025-03-21 19:40:36,690] |MainLogger| - INFO: Starting the application.
+[2025-03-21 19:43:56,597] |MainLogger| - INFO: Starting the application.
+[2025-03-21 19:47:14,771] |MainLogger| - INFO: Starting the application.
+[2025-03-21 19:47:44,236] |MainLogger| - INFO: Starting the application.
+[2025-03-21 19:49:06,999] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:17:20,916] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:17:51,162] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:21:22,433] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:21:26,698] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:23:54,366] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:23:57,385] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:25:53,895] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:25:57,117] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:26:11,304] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:26:13,901] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:27:31,006] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:27:34,383] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:27:44,240] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:37:55,348] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:38:56,104] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:38:58,691] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:40:58,035] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:41:02,123] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:46:14,477] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:46:17,797] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:46:52,570] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:46:56,922] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:47:29,518] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:47:32,165] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:47:52,583] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:48:44,930] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:54:04,928] |MainLogger| - INFO: Closing the application.
+[2025-03-21 20:54:08,001] |MainLogger| - INFO: Starting the application.
+[2025-03-21 20:54:14,076] |MainLogger| - INFO: Closing the application.

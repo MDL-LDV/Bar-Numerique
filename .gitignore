@@ -2,4 +2,6 @@
 /.idea
 /.vscode
 **.csv
+app.lock
+application.log
 source/commandes.sqlite3
